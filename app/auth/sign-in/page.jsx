@@ -59,9 +59,9 @@ export default function Page() {
         <>
             <div className="flex flex-col h-full w-full justify-center items-center p-10">
                 <form onSubmit={register} className="w-full flex flex-col gap-y-2 items-center">
-                    <div className="p-2 bg-black rounded-sm">
+                    <Link href="/" className="p-2 rounded-sm">
                          <Logo/>
-                    </div>
+                    </Link>
                     <h1 className="w-full text-center text-xl font-semibold my-2">Welcome back</h1>
                     <Input type="email" placeholder="Email" name="username" value={formData.username} onChange={handleInputChange} />
                     <Input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange}/>

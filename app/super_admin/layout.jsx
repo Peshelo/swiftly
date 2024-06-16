@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { useRouter } from "next/navigation"
 import pb from "@/lib/connection";
 import AdminSideNav from "@/components/dashboard/sidenav";
@@ -14,49 +14,54 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import useLogout from "@/lib/hooks/useLogout";
+import { toast } from "sonner";
 
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }) {
-  const router = useRouter()
-  const handleClick = () => {
+  const [username, setUsername] = useState("");
+  const [email,setEmail]= useState("");
+  const router = useRouter();
+  const logout = () => {
     pb.authStore.clear();
-    router.push('/auth/login');
+    router.push('/auth/sign-in');
     // pb.authStore.clear();
     // router.refresh()
   }
+  const fetchUserDetails = ()=>{
+    try{
+      const model = pb.authStore.model;
+      setUsername(model.username);
+      setEmail(model.email);
+      console.warn(model)
+    }catch(e){
+        toast.error(e.message)
+    }
+  }
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   return (
     <section className="w-screen h-screen overflow-hidden flex flex-row">
-      <div className="flex overflow-hidden flex-col bg-white justify-between p-2 gap-y-4 pb-4 border border-l">
+      <div className="flex overflow-hidden shadow-md flex-col bg-slate-900 text-white justify-between p-2 gap-y-4 pb-4 border-l">
         <Logo />
         <Card className="flex flex-row gap-x-2 p-1 items-center">
-          <Avatar name={pb.authStore.model.username} />
+          <Avatar name={username} />
           <div className="flex flex-col">
-            <h2 className="text-md text-gray-600">{pb.authStore.model.username}</h2>
-            <p className="text-xs text-gray-400">{pb.authStore.model.email}</p>
+            <h2 className="text-md text-gray-600">{username}</h2>
+            <p className="text-xs text-gray-400">{email}</p>
           </div>
         </Card>
         <AdminSideNav />
-        <Button>Logout</Button>
+        <Button onClick={()=>logout()}>Logout</Button>
       </div>
 
       <div className="w-full">
-        <div className=" bg-white border-b shadow-sm top-0 sticky z-10 w-full p-4 flex flex-row justify-between items-center">
-          <Input type="text" placeholder="Search..." className="w-fit" />
-          <Popover className="mx-4">
-            <PopoverTrigger>            
-              <Avatar name={pb.authStore.model.username} />
-            </PopoverTrigger>
-            <PopoverContent className="gap-y-2 border-separate">
-              <p>Settings</p>
-              <Button>Logout</Button>
-            </PopoverContent>
-          </Popover>
-
-        </div>
-        <div className=" h-full overflow-y-auto">
+      
+        <div className=" h-full bg-gray-50 overflow-y-auto">
         {children}
         </div>
       </div>
