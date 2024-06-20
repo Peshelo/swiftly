@@ -1,12 +1,11 @@
-"use client"
-import { Input } from "@/components/ui/input"
-import { Check } from 'lucide-react';
-import { Button } from '../ui/button';
+"use client";
+import { Input } from "@/components/ui/input";
+import { Check } from "lucide-react";
+import { Button } from "../ui/button";
 import pb from "@/lib/connection";
-import { toast } from 'sonner';
-import { useState,useEffect} from "react";
+import { toast } from "sonner";
+import { useState, useEffect } from "react";
 import { Textarea } from "@nextui-org/input";
- 
 import {
   Select,
   SelectContent,
@@ -15,32 +14,31 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
-
-export default function EditCaseForm({recordId}) {
+export default function EditCaseForm({ recordId }) {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    city: '',
-    address: '',
-    latitude: '',
-    longitude: '',
+    title: "",
+    description: "",
+    city: "",
+    address: "",
+    latitude: "",
+    longitude: "",
     merchant: null,
-    status: ''
+    status: "",
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const fetchCaseDetails = async ()=>{
-    try{
-      const record = await pb.collection('cases').getOne(recordId);
+  const fetchCaseDetails = async () => {
+    try {
+      const record = await pb.collection("cases").getOne(recordId);
       setFormData({
         title: record.title,
         description: record.description,
@@ -49,28 +47,28 @@ export default function EditCaseForm({recordId}) {
         latitude: record.latitude,
         longitude: record.longitude,
         merchant: record.merchant,
-        status: record.status
-      })
-    }catch(e){
-      toast.error(e.message)
+        status: record.status,
+      });
+    } catch (e) {
+      toast.error(e.message);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        let record = await pb.collection('cases').update(recordId,formData);
-        toast.success("Case edited successfully");
-        console.log(record);
-        
-    }catch(e){
-        toast.error(e.message)
+    try {
+      let record = await pb.collection("cases").update(recordId, formData);
+      toast.success("Case edited successfully");
+      console.log(record);
+    } catch (e) {
+      toast.error(e.message);
     }
     console.log(formData);
   };
-useEffect(()=>{
-  fetchCaseDetails();
-},[])
+
+  useEffect(() => {
+    fetchCaseDetails();
+  }, []);
 
   return (
     <div className="">
@@ -140,33 +138,33 @@ useEffect(()=>{
           />
         </div>
         <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Status</label>
-
-        <Select>
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder={formData.status} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup onChange={(e)=>setFormData((prevData) => ({
-      ...prevData,
-      'status':e.target.value
-    }))}>
-          <SelectLabel>Select Status</SelectLabel>
-          <SelectItem value="Pending">Pending</SelectItem>
-          <SelectItem value="Open">Open</SelectItem>
-          <SelectItem value="Ongoing">Ongoing</SelectItem>
-          <SelectItem value="Resolved">Resolved</SelectItem>
-          <SelectItem value="Cancelled">Cancelled</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-        </div>
-
-        <div className="mt-6">
-          <Button
-            type="submit"
-            className="w-full bg-orange-400"
+          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <Select
+            value={formData.status}
+            onValueChange={(value) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                status: value,
+              }))
+            }
           >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={formData.status} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Select Status</SelectLabel>
+                <SelectItem value="Pending">Pending</SelectItem>
+                <SelectItem value="Open">Open</SelectItem>
+                <SelectItem value="Ongoing">Ongoing</SelectItem>
+                <SelectItem value="Resolved">Resolved</SelectItem>
+                <SelectItem value="Cancelled">Cancelled</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="mt-6">
+          <Button type="submit" className="w-full bg-orange-400">
             Edit Case
           </Button>
         </div>

@@ -1,7 +1,6 @@
-"use client"
-import * as React from "react"
-import { Minus, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -11,66 +10,119 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import pb from "@/lib/connection";
-import { Input } from "../ui/input"
-import { Textarea } from "@nextui-org/input"
-import { Label } from "../ui/label"
+} from "@/components/ui/drawer";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
+import pb from "@/lib/connection";
 
 export default function ReportCase() {
-  const [goal, setGoal] = React.useState(350)
+  const [goal, setGoal] = React.useState(350);
   const [form, setForm] = React.useState({
-    title: '',
-    description: '',
-    city: '',
-    address: '',
-    latitude: '',
-    longitude: '',
-    merchant: '',
-  })
-  const [errors, setErrors] = React.useState({})
+    title: "",
+    description: "",
+    city: "",
+    address: "",
+    merchant: "",
+    images: null,
+  });
+  const [errors, setErrors] = React.useState({});
+  const [merchants, setMerchants] = React.useState([]);
+  const [currentLocation, setCurrentLocation] = React.useState(null);
+
+  React.useEffect(() => {
+    async function fetchMerchants() {
+      try {
+        const records = await pb.collection("merchant").getFullList();
+        setMerchants(records);
+      } catch (error) {
+        console.error("Error fetching merchants:", error);
+      }
+    }
+
+    fetchMerchants();
+  }, []);
+
+  React.useEffect(() => {
+    function getCurrentLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.error("Error fetching current location:", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
+
+    getCurrentLocation();
+  }, []);
 
   function onClick(adjustment) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)))
+    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
   }
 
   function handleChange(e) {
-    const { name, value } = e.target
-    setForm({
-      ...form,
-      [name]: value,
-    })
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setForm({
+        ...form,
+        [name]: files,
+      });
+    } else {
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    }
   }
 
   function validate() {
-    const newErrors = {}
-    if (!form.title) newErrors.title = 'Title is required'
-    if (!form.description) newErrors.description = 'Description is required'
-    if (!form.city) newErrors.city = 'City is required'
-    if (!form.address) newErrors.address = 'Address is required'
-    if (!form.latitude) newErrors.latitude = 'Latitude is required'
-    if (!form.longitude) newErrors.longitude = 'Longitude is required'
-    if (!form.merchant) newErrors.merchant = 'Merchant is required'
-    return newErrors
+    const newErrors = {};
+    if (!form.title) newErrors.title = "Title is required";
+    if (!form.description) newErrors.description = "Description is required";
+    if (!form.city) newErrors.city = "City is required";
+    if (!form.address) newErrors.address = "Address is required";
+    if (!form.merchant) newErrors.merchant = "Merchant is required";
+    return newErrors;
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    const newErrors = validate()
+    e.preventDefault();
+    const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
+      setErrors(newErrors);
     } else {
       try {
-        const data = {
-          ...form,
-          status: 'Open',
+        const formData = new FormData();
+        formData.append("title", form.title);
+        formData.append("description", form.description);
+        formData.append("city", form.city);
+        formData.append("address", form.address);
+        formData.append("merchant", form.merchant);
+        formData.append("status", "Open");
+        if (currentLocation) {
+          formData.append("latitude", currentLocation.latitude);
+          formData.append("longitude", currentLocation.longitude);
         }
-        const record = await pb.collection('cases').create(data)
-        console.log('Record created:', record)
-        setErrors({})
+        if (form.images) {
+          for (let i = 0; i < form.images.length; i++) {
+            formData.append("images", form.images[i]);
+          }
+        }
+
+        const record = await pb.collection("cases").create(formData);
+        console.log("Record created:", record);
+        setErrors({});
       } catch (error) {
-        console.error('Error creating record:', error)
+        console.error("Error creating record:", error);
       }
     }
   }
@@ -84,10 +136,9 @@ export default function ReportCase() {
         <div className="mx-auto w-full max-w-lg">
           <DrawerHeader>
             <DrawerTitle>Report a case</DrawerTitle>
-            <DrawerDescription>Report a case.</DrawerDescription>
+            <DrawerDescription>Report a case using your current location.</DrawerDescription>
           </DrawerHeader>
           <div className="pb-0">
-         
             <form onSubmit={handleSubmit} className="text-sm max-sm:mx-2">
               <div className="mt-2">
                 <label>
@@ -99,7 +150,9 @@ export default function ReportCase() {
                     onChange={handleChange}
                     className="block w-full border p-2"
                   />
-                  {errors.title && <span className="text-red-500">{errors.title}</span>}
+                  {errors.title && (
+                    <span className="text-red-500">{errors.title}</span>
+                  )}
                 </label>
               </div>
               <div className="mt-2">
@@ -112,7 +165,9 @@ export default function ReportCase() {
                     onChange={handleChange}
                     className="block w-full border p-2"
                   />
-                  {errors.description && <span className="text-red-500">{errors.description}</span>}
+                  {errors.description && (
+                    <span className="text-red-500">{errors.description}</span>
+                  )}
                 </label>
               </div>
               <div className="mt-2">
@@ -125,7 +180,9 @@ export default function ReportCase() {
                     onChange={handleChange}
                     className="block w-full border p-2"
                   />
-                  {errors.city && <span className="text-red-500">{errors.city}</span>}
+                  {errors.city && (
+                    <span className="text-red-500">{errors.city}</span>
+                  )}
                 </label>
               </div>
               <div className="mt-2">
@@ -138,55 +195,51 @@ export default function ReportCase() {
                     onChange={handleChange}
                     className="block w-full border p-2"
                   />
-                  {errors.address && <span className="text-red-500">{errors.address}</span>}
+                  {errors.address && (
+                    <span className="text-red-500">{errors.address}</span>
+                  )}
                 </label>
               </div>
-             <div className="flex flex-row gap-x-2 mt-2">
-             <div className="">
-                <label>
-                  Latitude
-                  <Input
-                    type="text"
-                    name="latitude"
-                    value={form.latitude}
-                    onChange={handleChange}
-                    className="block w-full border p-2"
-                  />
-                  {errors.latitude && <span className="text-red-500">{errors.latitude}</span>}
-                </label>
-              </div>
-              <div className="">
-                <label>
-                  Longitude
-                  <Input
-                    type="text"
-                    name="longitude"
-                    value={form.longitude}
-                    onChange={handleChange}
-                    className="block w-full border p-2"
-                  />
-                  {errors.longitude && <span className="text-red-500">{errors.longitude}</span>}
-                </label>
-              </div>
-             </div>
               <div className="mt-2">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="picture">Picture</Label>
-      <Input id="picture" type="file" className="w-full" />
-    </div>
+                <div className="w-full max-w-sm items-center gap-1.5">
+                  <Label htmlFor="images">Images</Label>
+                  <Input
+                    id="images"
+                    type="file"
+                    name="images"
+                    multiple
+                    onChange={handleChange}
+                    className="w-full"
+                  />
+                </div>
               </div>
               <div className="mt-2">
                 <label>
                   Merchant
-                  <Input
-                    type="text"
+                  <select
                     name="merchant"
                     value={form.merchant}
                     onChange={handleChange}
                     className="block w-full border p-2"
-                  />
-                  {errors.merchant && <span className="text-red-500">{errors.merchant}</span>}
+                  >
+                    <option value="">Select a merchant</option>
+                    {merchants.map((merchant) => (
+                      <option key={merchant.id} value={merchant.id}>
+                        {merchant.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.merchant && (
+                    <span className="text-red-500">{errors.merchant}</span>
+                  )}
                 </label>
+              </div>
+              <div className="mt-2">
+                {currentLocation && (
+                  <p className="text-gray-600 text-sm">
+                    {`Your current location is latitude:${currentLocation.latitude} and longitude: ${currentLocation.longitude}.`}
+                  </p>
+                )}
               </div>
               <DrawerFooter>
                 <Button type="submit">Submit</Button>
@@ -199,5 +252,5 @@ export default function ReportCase() {
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
