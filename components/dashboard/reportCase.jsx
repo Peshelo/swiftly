@@ -24,6 +24,7 @@ export default function ReportCase() {
     city: "",
     address: "",
     merchant: "",
+    priority: "",
     images: null,
   });
   const [errors, setErrors] = React.useState({});
@@ -91,6 +92,7 @@ export default function ReportCase() {
     if (!form.city) newErrors.city = "City is required";
     if (!form.address) newErrors.address = "Address is required";
     if (!form.merchant) newErrors.merchant = "Merchant is required";
+    if (!form.priority) newErrors.priority = "Priority is required";
     return newErrors;
   }
 
@@ -107,6 +109,7 @@ export default function ReportCase() {
         formData.append("city", form.city);
         formData.append("address", form.address);
         formData.append("merchant", form.merchant);
+        formData.append("priority", form.priority);
         formData.append("status", "Open");
         if (currentLocation) {
           formData.append("latitude", currentLocation.latitude);
@@ -200,7 +203,7 @@ export default function ReportCase() {
                   )}
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 w-full">
                 <div className="w-full max-w-sm items-center gap-1.5">
                   <Label htmlFor="images">Images</Label>
                   <Input
@@ -212,6 +215,25 @@ export default function ReportCase() {
                     className="w-full"
                   />
                 </div>
+              </div>
+              <div className="mt-2">
+                <label>
+                  Priority
+                  <select
+                    name="priority"
+                    value={form.priority}
+                    onChange={handleChange}
+                    className="block w-full border p-2"
+                  >
+                    <option disabled selected>Select a priority</option>
+                    <option value="green">High Priority</option>
+                    <option value="yellow">Medium Priority</option>
+                    <option value="red">Low Priority</option>
+                  </select>
+                  {errors.priority && (
+                    <span className="text-red-500">{errors.priority}</span>
+                  )}
+                </label>
               </div>
               <div className="mt-2">
                 <label>

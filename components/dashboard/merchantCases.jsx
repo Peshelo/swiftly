@@ -167,6 +167,7 @@ export default function MerchantsCases() {
             <th className="text-left">Longitude</th>
             <th className="text-left p-1">Created</th>
             <th className="pr-4 p-1 text-left">Status</th>
+            <th className="pr-4 p-1 text-left">Priority</th>
             <th className="pr-4 p-1"></th>
             <th className="pr-4 p-1"></th>
 
@@ -234,6 +235,13 @@ export default function MerchantsCases() {
         </PopoverContent>
       </Popover> */}
                 </div>
+              </td>
+              <td>
+              <td>
+              <p status={formData?.priority} className={`bg-${formData?.priority}-500 p-2 w-fit text-white rounded-sm text-xs`}>
+                  {formData?.priority.toUpperCase()}
+                </p>
+              </td>
               </td>
               <td>
                 <Sheet className="w-1/2">

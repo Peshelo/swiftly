@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { useState,useEffect} from "react";
 import {Snippet} from "@nextui-org/snippet";
 import {Badge} from "@/components/dashboard/badge/badge"
+import { image } from "@nextui-org/theme"
 
 export default function TrackCase({recordId}) {
   const [formData, setFormData] = useState({
@@ -27,7 +28,9 @@ export default function TrackCase({recordId}) {
     latitude: '',
     longitude: '',
     merchant: null,
-    status: ''
+    images: null,
+    status: '',
+    priority: ''
   });
 
 
@@ -42,7 +45,9 @@ export default function TrackCase({recordId}) {
         latitude: record.latitude,
         longitude: record.longitude,
         merchant: record.merchant,
-        status: record.status
+        status: record.status,
+        images: record.images,
+        priority: record.priority
       })
     }catch(e){
       toast.error(e.message)
@@ -86,6 +91,12 @@ export default function TrackCase({recordId}) {
                 <p>{formData?.status}</p>
               </div>
               <div className="mt-2">
+                <Label className="font-semibold text-green-700">Status:</Label>
+                <p status={formData?.priority} className={`bg-${formData?.priority}-500 p-2 w-fit text-white rounded-sm text-xs`}>
+                  {formData?.priority.toUpperCase()}
+                </p>
+              </div>
+              <div className="mt-2">
                 <Label className="font-semibold text-green-700">Latitude:</Label>
                 <p>{formData?.latitude}</p>
               </div>
@@ -95,10 +106,19 @@ export default function TrackCase({recordId}) {
               </div>
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Merchant:</Label>
-                <p>Merchant</p>
+                <p>-</p>
               </div>
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Picture:</Label>
+                <div className="flex flex-col gap-y-1">
+                  
+                {
+                  formData?.images?.map((image, index)=>(
+                    <a key={index} href={`https://swiftly.pockethost.io/api/files/vc5muu8hvdtzlf1/50yj7a7wqzzkarp/${image}`} target="_blank"></a>
+                  ))
+                }
+                </div>
+               
               </div>
               <DrawerFooter className="mt-4">
                 <Button variant="destructive">Close Case</Button>
