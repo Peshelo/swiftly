@@ -5,10 +5,10 @@ import Image from "next/image";
 export default function Layout({ children }) {
   return (
     <div className="grid grid-cols-10 p-4 w-screen h-screen bg-gray-100 gap-4">
-      <div className="col-span-4 h-full border-2 bg-white shadow-sm rounded-md">
+      <div className="col-span-4 max-sm:col-span-10 h-full border-2 bg-white shadow-sm rounded-md">
         {children}
       </div>
-      <div className="col-span-6 bg-white shadow-md rounded-md">
+      <div className="col-span-6 max-sm:hidden bg-white shadow-md rounded-md">
         {/* Background Image */}
         <div className="w-full h-full relative">
   {/* Background image with gradient overlay */}

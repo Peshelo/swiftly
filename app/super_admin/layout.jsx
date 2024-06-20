@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover"
 import useLogout from "@/lib/hooks/useLogout";
 import { toast } from "sonner";
+import { HiLogout } from "react-icons/hi";
 
 
 export default function DashboardLayout({
@@ -47,16 +48,18 @@ export default function DashboardLayout({
   return (
     <section className="w-screen h-screen overflow-hidden flex flex-row">
       <div className="flex overflow-hidden shadow-md flex-col bg-slate-900 text-white justify-between p-2 gap-y-4 pb-4 border-l">
-        <Logo />
-        <Card className="flex flex-row gap-x-2 p-1 items-center">
+        <div className="max-sm:hidden">
+        <Logo  />
+        </div>
+        <Card className=" max-sm:justify-center flex flex-row gap-x-2 p-1 items-center">
           <Avatar name={username} />
-          <div className="flex flex-col">
+          <div className="max-sm:hidden flex flex-col">
             <h2 className="text-md text-gray-600">{username}</h2>
             <p className="text-xs text-gray-400">{email}</p>
           </div>
         </Card>
         <AdminSideNav />
-        <Button onClick={()=>logout()}>Logout</Button>
+        <Button onClick={()=>logout()}><HiLogout size={20}/> <p className="max-sm:hidden">Logout</p></Button>
       </div>
 
       <div className="w-full">

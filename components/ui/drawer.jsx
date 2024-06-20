@@ -49,7 +49,7 @@ const DrawerHeader = ({
   ...props
 }) => (
   <div
-    className={cn("grid gap-y-1.5 px-4 text-center sm:text-left", className)}
+    className={cn("grid gap-y-1.5 text-center sm:text-left", className)}
     {...props} />
 )
 DrawerHeader.displayName = "DrawerHeader"

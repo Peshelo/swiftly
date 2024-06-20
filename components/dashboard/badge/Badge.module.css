@@ -1,0 +1,30 @@
+/* components/Badge.module.css */
+.badge {
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    text-transform: capitalize;
+  }
+  
+  .open {
+    background-color: green;
+  }
+  
+  .resolved {
+    background-color: blue;
+  }
+  
+  .ongoing {
+    background-color: orange;
+  }
+  
+  .cancelled {
+    background-color: red;
+  }
+  
+  .default {
+    background-color: grey;
+  }
+  

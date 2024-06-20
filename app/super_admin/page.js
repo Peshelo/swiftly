@@ -64,7 +64,10 @@ export default function SuperAdminDashboard() {
   return (
     <main className="flex flex-col gap-y-4 justify-between">
         <div className="bg-slate-900 border-l border-b shadow-md top-0 sticky z-10 w-full p-4 flex flex-row justify-between items-center">
-          <Input type="text" placeholder="Search..." className="w-fit" />
+          <Input type="text" placeholder="Search..." className="w-fit max-sm:hidden" />
+          <div className="hidden max-sm:block">
+        <Logo  />
+        </div>
           <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
@@ -136,12 +139,11 @@ export default function SuperAdminDashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid grid-cols-6 gap-x-4 px-4 w-full">
-        <div className="col-span-4 bg-slate-900 border rounded-sm h-[500px] w-full">
+      <div className="grid grid-cols-6 gap-x-4 max-sm:gap-y-2 px-4 w-full">
+        <div className="col-span-4 max-sm:col-span-6 bg-slate-900 border rounded-sm h-[500px] w-full">
 
         </div>
  <NotificationCard/>
-<div className="h-full p-4 border w-full rounded-sm my-2"></div>
       </div>
     </main>
   );

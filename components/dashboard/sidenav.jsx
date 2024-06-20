@@ -20,22 +20,21 @@ export default function AdminSideNav() {
     return (
         <nav className="w-full bg-transparent h-full">
 <Command  className="bg-transparent">
-  <div className="w-[299px]"></div>
+  <div className="w-[299px] max-sm:w-fit"></div>
   <CommandList className="text-white">
-    <CommandGroup heading="General" >
-      <CommandItem><Link href="/super_admin" className="flex flex-row w-full items-center gap-x-2 py-2 text-white"><HiViewGrid size={20} />
-       Dashboard</Link></CommandItem>
+    <CommandGroup heading="General">
+      <CommandItem><Link href="/super_admin" className="flex flex-row w-full items-center max-sm:justify-center gap-x-2 py-2 text-white"><HiViewGrid size={20} />
+       <p className="max-sm:hidden">Dashboard</p></Link></CommandItem>
     </CommandGroup>
     <CommandGroup heading="Merchants">
-      <CommandItem ><Link href="/super_admin/merchants" className="flex flex-row w-full items-center gap-x-2 py-2 text-white"><HiUserGroup size={20} />Merchants</Link></CommandItem>
-    </CommandGroup>
-    <CommandGroup heading="Cases">
-      <CommandItem><Link href={'/super_admin/cases'} className="flex flex-row -full items-center gap-x-2 py-2 text-white"><HiDocument size={20} />All Cases</Link></CommandItem>
-      <CommandItem><Link href={'/super_admin/cases/map'} className="flex flex-row -full items-center gap-x-2 py-2 text-white"><HiMap size={20} />Cases Map</Link></CommandItem>
+      <CommandItem ><Link href="/super_admin/merchants" className="flex flex-row w-full items-center max-sm:justify-center gap-x-2 py-2 text-white"><HiUserGroup size={20} />
+      <p className="max-sm:hidden">Merchants</p></Link></CommandItem>
     </CommandGroup>
     <CommandGroup heading="Settings" className="border-none">
-      <CommandItem><Link href={'/super_admin/profile'} className="flex flex-row -full items-center gap-x-2 py-2 text-white"><HiUser size={20} />Profile</Link></CommandItem>
-      <CommandItem><Link href={'/super_admin/settings'} className="flex flex-row -full items-center gap-x-2 py-2 text-white"><HiAdjustments size={20} />Settings</Link></CommandItem>
+      <CommandItem><Link href={'/super_admin/profile'} className="flex flex-row w-full items-center max-sm:justify-center gap-x-2 py-2 text-white"><HiUser size={20} />
+      <p className="max-sm:hidden">Profile</p></Link></CommandItem>
+      <CommandItem><Link href={'/super_admin/settings'} className="flex flex-row w-full items-center max-sm:justify-center gap-x-2 py-2 text-white"><HiAdjustments size={20} />
+      <p className="max-sm:hidden">Settings</p></Link></CommandItem>
     </CommandGroup>
   </CommandList>
 </Command>

@@ -13,7 +13,7 @@ import { Check } from "lucide-react"
 
 export function NotificationCard() {
   return (
-    <Card className="col-span-2 overflow-y-auto flex flex-col border rounded-sm h-[500px] w-full p-2">
+    <Card className="col-span-2 max-sm:col-span-6 max-sm:h-fit overflow-y-auto flex flex-col border rounded-sm h-[500px] w-full p-2">
     <h1>Notifications</h1>
 
     <CardContent className="grid gap-4">
