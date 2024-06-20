@@ -123,6 +123,7 @@ export default function ReportCase() {
 
         const record = await pb.collection("cases").create(formData);
         console.log("Record created:", record);
+        alert("Case ID: " + record.id);
         setErrors({});
       } catch (error) {
         console.error("Error creating record:", error);
