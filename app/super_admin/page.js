@@ -17,6 +17,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState,useEffect } from 'react';
 import { toast } from "sonner";
+import { set } from "date-fns";
 
 
 export default function SuperAdminDashboard() {
@@ -24,12 +25,18 @@ export default function SuperAdminDashboard() {
   const [totalOpenCases, setOpenCases] = useState([]);
   const [totalOngoingCases, setOngoingCases] = useState([]);
   const [totalResolvedCases, setResolvedCases] = useState([]);
+  const [merchants, setMerchants] = useState([]);
+  const [totalActiveMerchants, setActiveMerchants] = useState([]);
+  const [totalDeactivatedMerchants, setDeactivatedMerchants] = useState([]);
 
   const fetchStatistics = async ()=>{
     let cases =[];
     let openCases =[];
     let ongoingCases = [];
     let resolvedCases = [];
+    let merchants = [];
+    let activeMerchants = [];
+    let deactivatedMerchants = [];
 
     try{
       cases = await pb.collection('cases').getFullList({
@@ -38,18 +45,22 @@ export default function SuperAdminDashboard() {
       openCases = (await pb.collection('cases').getList(1,50,{filter:'status="Open"'})).items;
       ongoingCases = (await pb.collection('cases').getList(1,50,{filter:'status="Ongoing"'})).items;
       resolvedCases = (await pb.collection('cases').getList(1,50,{filter:'status="Resolved"'})).items;
+      merchants = await pb.collection('merchant').getFullList();
+      activeMerchants = merchants.filter(merchant=>merchant.isActive == true);
+      deactivatedMerchants = merchants.filter(merchant=>merchant.isActive == false);
 
     }catch(e){
       toast.error(e.message)
     }
-    console.log(cases)
-    console.log(openCases)
-    console.log(ongoingCases)
-    console.log(resolvedCases)
+  
+    console.log(merchants);
     setTotalCases(cases);
     setOpenCases(openCases);
     setOngoingCases(ongoingCases);
     setResolvedCases(resolvedCases);
+    setMerchants(merchants);
+    setActiveMerchants(activeMerchants);
+    setDeactivatedMerchants(deactivatedMerchants);
   }
 
   useEffect(() => {
@@ -89,12 +100,12 @@ export default function SuperAdminDashboard() {
         <Card x-chunk="dashboard-01-chunk-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Cases
+              Total Merchants
             </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCases?.length}</div>
+            <div className="text-2xl font-bold">{merchants?.length}</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
@@ -103,12 +114,12 @@ export default function SuperAdminDashboard() {
         <Card x-chunk="dashboard-01-chunk-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Open Cases
+              Active Merchants
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalOpenCases?.length}</div>
+            <div className="text-2xl font-bold">{totalActiveMerchants?.length}</div>
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>
@@ -116,11 +127,11 @@ export default function SuperAdminDashboard() {
         </Card>
         <Card x-chunk="dashboard-01-chunk-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ongoing Cases</CardTitle>
+            <CardTitle className="text-sm font-medium">De-activated Merchants</CardTitle>
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalOngoingCases?.length}</div>
+            <div className="text-2xl font-bold">{totalDeactivatedMerchants?.length}</div>
             <p className="text-xs text-muted-foreground">
               +19% from last month
             </p>
@@ -128,11 +139,11 @@ export default function SuperAdminDashboard() {
         </Card>
         <Card x-chunk="dashboard-01-chunk-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved Cases</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Cases</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalResolvedCases?.length}</div>
+            <div className="text-2xl font-bold">{totalCases?.length}</div>
             <p className="text-xs text-muted-foreground">
               +201 since last hour
             </p>
@@ -143,7 +154,7 @@ export default function SuperAdminDashboard() {
         <div className="col-span-4 max-sm:col-span-6 bg-slate-900 border rounded-sm h-[500px] w-full">
 
         </div>
- <NotificationCard/>
+ {/* <NotificationCard/> */}
       </div>
     </main>
   );

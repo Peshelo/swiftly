@@ -25,6 +25,7 @@ export default function DashboardLayout({
   const [username, setUsername] = useState("");
   const [email,setEmail]= useState("");
   const router = useRouter();
+
   const logout = () => {
     pb.authStore.clear();
     router.push('/auth/sign-in');
@@ -49,7 +50,7 @@ export default function DashboardLayout({
     <section className="w-screen h-screen overflow-hidden flex flex-row">
       <div className="flex overflow-hidden shadow-md flex-col bg-slate-900 text-white justify-between p-2 gap-y-4 pb-4 border-l">
         <div className="max-sm:hidden">
-        <Logo  />
+        <Link href={'/super_admin'} className="px-2"><Logo  /></Link>
         </div>
         <Card className=" max-sm:justify-center flex flex-row gap-x-2 p-1 items-center">
           <Avatar name={username} />
@@ -59,7 +60,7 @@ export default function DashboardLayout({
           </div>
         </Card>
         <AdminSideNav />
-        <Button onClick={()=>logout()}><HiLogout size={20}/> <p className="max-sm:hidden">Logout</p></Button>
+        <Button variant={'secondary'} className="w-full flex flex-row justify-start items-center" onClick={()=>logout()}><HiLogout size={20}/> <p className="max-sm:hidden mx-2" variant="secondary">Logout</p></Button>
       </div>
 
       <div className="w-full">

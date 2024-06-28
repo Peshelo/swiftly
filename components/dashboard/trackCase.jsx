@@ -18,9 +18,11 @@ import { useState,useEffect} from "react";
 import {Snippet} from "@nextui-org/snippet";
 import {Badge} from "@/components/dashboard/badge/badge"
 import { image } from "@nextui-org/theme"
+import { HiCollection } from "react-icons/hi"
 
 export default function TrackCase({recordId}) {
   const [formData, setFormData] = useState({
+    id:'',
     title: '',
     description: '',
     city: '',
@@ -36,8 +38,11 @@ export default function TrackCase({recordId}) {
 
   const fetchCaseDetails = async (id)=>{
     try{
-      const record = await pb.collection('cases').getOne(id);
+      const record = await pb.collection('cases').getFirstListItem(`id="${id}"`, {
+        expand: 'merchant',
+    });
       setFormData({
+        id: record.id,
         title: record.title,
         description: record.description,
         city: record.city,
@@ -47,15 +52,17 @@ export default function TrackCase({recordId}) {
         merchant: record.merchant,
         status: record.status,
         images: record.images,
-        priority: record.priority
+        priority: record.priority,
+        merchant: record.expand.merchant
       })
+      console.log(record);
     }catch(e){
-      toast.error(e.message)
+      // toast.error(e.message)
     }
   }
   useEffect(()=>{
     fetchCaseDetails(recordId);
-  },[])
+  },[recordId])
   return (
     <Drawer >
       <DrawerTrigger asChild>
@@ -67,7 +74,8 @@ export default function TrackCase({recordId}) {
             <DrawerTitle className="flex flex-row items-center gap-x-2 my-2">Case Reference: <Snippet color="success">{recordId}</Snippet></DrawerTitle>
             <DrawerDescription>Track the state of your case.</DrawerDescription>
           </DrawerHeader>
-          <div className="pb-0">
+          {formData.title ? (
+            <div className="pb-0">
             <div className="mt-4">
               <div>
                 <Label className="font-semibold text-green-700">Case Title:</Label>
@@ -87,12 +95,11 @@ export default function TrackCase({recordId}) {
               </div>
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Status:</Label>
-                {/* <Badge status={formData?.status}/> */}
-                <p>{formData?.status}</p>
+                <div className="p-1 px-2 bg-gray-200 w-fit text-sm rounded-xl">{formData?.status}</div>
               </div>
               <div className="mt-2">
-                <Label className="font-semibold text-green-700">Status:</Label>
-                <p status={formData?.priority} className={`bg-${formData?.priority}-500 p-2 w-fit text-white rounded-sm text-xs`}>
+                <Label className="font-semibold text-green-700">Priority:</Label>
+                <p status={formData?.priority} className={`bg-${formData?.priority}-500 p-2 w-fit rounded-xl px-4 text-xs`}>
                   {formData?.priority.toUpperCase()}
                 </p>
               </div>
@@ -104,17 +111,21 @@ export default function TrackCase({recordId}) {
                 <Label className="font-semibold text-green-700">Longitude:</Label>
                 <p>{formData?.longitude}</p>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 text-gray-500 text-sm">
                 <Label className="font-semibold text-green-700">Merchant:</Label>
-                <p>-</p>
+                <p>Name: {formData?.merchant?.name}</p>
+                <p>Contact: 0{formData?.merchant?.phoneNumber}</p>
+
               </div>
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Picture:</Label>
-                <div className="flex flex-col gap-y-1">
+                <div className="flex flex-row w-full gap-2">
                   
                 {
                   formData?.images?.map((image, index)=>(
-                    <a key={index} href={`https://swiftly.pockethost.io/api/files/vc5muu8hvdtzlf1/50yj7a7wqzzkarp/${image}`} target="_blank"></a>
+                    <a key={index} href={`https://swiftly.pockethost.io/api/files/vc5muu8hvdtzlf1/${formData?.id}/${image}`} target="_blank"  >
+                      <img src={`https://swiftly.pockethost.io/api/files/vc5muu8hvdtzlf1/${formData?.id}/${image}`} alt="case" className="w-20 h-20 border hover:border-2 hover:shadow-md duration-75 rounded-md object-cover"/>
+                    </a>
                   ))
                 }
                 </div>
@@ -128,6 +139,9 @@ export default function TrackCase({recordId}) {
               </DrawerFooter>
             </div>
           </div>
+          ): <p className="flex flex-col h-[200px] w-full p-4 items-center justify-center text-gray-400">
+            <HiCollection size={20} className="text-gray-500 my-2"/>
+            Case not found</p>}
         </div>
       </DrawerContent>
     </Drawer>

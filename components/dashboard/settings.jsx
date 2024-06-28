@@ -1,3 +1,6 @@
+"use client"
+import pb from "@/lib/connection";
+
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
@@ -21,8 +24,26 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 export default function Settings() {
+  const [username, setUsername] = useState("");
+  const [email,setEmail]= useState("");
+
+  const fetchUserDetails = ()=>{
+    try{
+      const model = pb.authStore.model;
+      setUsername(model.username);
+      setEmail(model.email);
+      console.warn(model)
+    }catch(e){
+        toast.error(e.message)
+    }
+  }
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
   return (
     <div className="flex min-h-screen w-full flex-col">
       {/* <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -155,56 +176,59 @@ export default function Settings() {
             <Link href="#" className="font-semibold text-primary">
               General
             </Link>
-            <Link href="#">Security</Link>
-            <Link href="#">Integrations</Link>
-            <Link href="#">Support</Link>
-            <Link href="#">Organizations</Link>
-            <Link href="#">Advanced</Link>
+            <Link href="#">Account</Link>
           </nav>
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
-                <CardTitle>Store Name</CardTitle>
+                <CardTitle>Account Details</CardTitle>
                 <CardDescription>
-                  Used to identify your store in the marketplace.
+                  This is the name that will be displayed to your customers.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form>
-                  <Input placeholder="Store Name" />
+                <form className="flex flex-col gap-y-2">
+                  <label className="text-sm text-gray-600">Username:</label>
+                  <Input placeholder="Username" disabled value={username}/>
+
+                  <label className="text-sm text-gray-600">Email:</label>
+                  <Input placeholder="Email" disabled  value={email}/>
+
                 </form>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
+              {/* <CardFooter className="border-t px-6 py-4">
+                <Button>Submit</Button>
+              </CardFooter> */}
             </Card>
             <Card x-chunk="dashboard-04-chunk-2">
               <CardHeader>
-                <CardTitle>Plugins Directory</CardTitle>
+                <CardTitle>Reset Password</CardTitle>
                 <CardDescription>
-                  The directory within your project, in which your plugins are
-                  located.
+                  This action will log you out of all devices.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form className="flex flex-col gap-4">
                   <Input
-                    placeholder="Project Name"
-                    defaultValue="/content/plugins"
+                    placeholder="Old Password"
+                    type="password"
+                  />
+                  <Input
+                    placeholder="New Password"
+                    type="password"
+                  />
+                  <Input
+                    placeholder="Confirm new password"
+                    type="password"
                   />
                   <div className="flex items-center space-x-2">
                     {/* <Checkbox id="include" defaultChecked /> */}
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Allow administrators to change the directory.
-                    </label>
+                
                   </div>
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button variant={'destructive'}>Reset</Button>
               </CardFooter>
             </Card>
           </div>

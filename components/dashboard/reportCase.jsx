@@ -227,9 +227,9 @@ export default function ReportCase() {
                     className="block w-full border p-2"
                   >
                     <option disabled selected>Select a priority</option>
-                    <option value="green">High Priority</option>
+                    <option value="red">High Priority</option>
                     <option value="yellow">Medium Priority</option>
-                    <option value="red">Low Priority</option>
+                    <option value="green">Low Priority</option>
                   </select>
                   {errors.priority && (
                     <span className="text-red-500">{errors.priority}</span>

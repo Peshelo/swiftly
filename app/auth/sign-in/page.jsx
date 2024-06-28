@@ -11,6 +11,7 @@ import Logo from "@/components/ui/logo";
 
 export default function Page() {
     const router = useRouter();
+    const [error, setError] = useState('');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -22,6 +23,14 @@ export default function Page() {
     async function register(e) {
         // const router = useRouter();
         e.preventDefault();
+
+        setError('');
+
+        //if username is empty or password is empty
+        if (!formData.username || !formData.password) {
+            setError('Please fill in all fields');
+            return;
+        }
         try {
             const authData = await pb.collection('users').authWithPassword(
                 formData.username,
@@ -63,10 +72,11 @@ export default function Page() {
                          <Logo/>
                     </Link>
                     <h1 className="w-full text-center text-xl font-semibold my-2">Welcome back</h1>
-                    <Input type="email" placeholder="Email" name="username" value={formData.username} onChange={handleInputChange} />
-                    <Input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange}/>
+                    <p className="text-red-600 text-sm w-full">{error}</p>
+                    <Input type="email" placeholder="Email" name="username" value={formData.username} onChange={handleInputChange} onFocus={()=>setError('')} />
+                    <Input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange} onFocus={()=>setError('')}/>
                     <Button variant={''} type="submit" className="w-full p-2">Login</Button>
-                    <p className="my-2 text-sm text-gray-600 w-full text-center">Do not have an account? <Link className="text-black" href={'/auth/register'}>Register</Link></p>
+                    <p className="my-2 text-sm text-gray-600 w-full text-center"><Link className="text-black underline underline-offset-1" href={'/auth/forgot-password'}>Forgot password?</Link></p>
                 </form>
             </div>
 

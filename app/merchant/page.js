@@ -179,19 +179,19 @@ export default function MerchantDashboard() {
               </TableHeader>
               <TableBody>
                 {totalOpenCases.map(mycase=>(
-    <TableRow key={mycase.id}>
+    <TableRow key={mycase.id} className={`bg-${mycase?.priority}-200`}>
     <TableCell>
-      <div className="font-medium">{mycase.title}</div>
+      <div className="font-medium">{mycase?.title}</div>
       <div className="hidden text-sm text-muted-foreground md:inline">
-        {mycase.description}
+        {mycase?.description}
       </div>
     </TableCell>
     <TableCell className="">
-      {mycase.address}
+      {mycase?.address}
     </TableCell>
     <TableCell className="">
       <Badge className="text-xs" variant="outline">
-        {mycase.status}
+        {mycase?.status}
       </Badge>
     </TableCell>
     {/* <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
@@ -211,9 +211,9 @@ export default function MerchantDashboard() {
           <CardHeader>
             <CardTitle>Recent Cases</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-8">
+          <CardContent className="grid">
             {totalCases.map(mycase=>(
-                <div key={mycase.id} className="flex items-center gap-4">
+                <div key={mycase.id} className="flex items-center gap-4 p-2 rounded-md hover:bg-gray-100 duration-75">
                 <Avatar name="AN" />
     
                   <div className="grid gap-1">

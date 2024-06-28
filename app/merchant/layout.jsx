@@ -70,13 +70,8 @@ export default function DashboardLayout({
     <section className="w-screen h-screen overflow-hidden flex flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-slate-900 px-4 md:px-6">
       <nav className="hidden text-white dark:text-slate-900 flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link
-          href="#"
-          className="flex items-center border-r border-gray-500 pr-4 gap-2 text-lg font-semibold md:text-base"
-        >
-          <Logo/>
-          <span className="sr-only">Swiftly</span>
-        </Link>
+      
+        <Link href={'/merchant'} className="px-2"><Logo  /></Link>
         <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiViewGrid size={20} />Dashboard</Link>
             <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiDocumentDuplicate size={20} />Cases</Link>
             <Link href="/merchant/map" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiLocationMarker size={20} />Map</Link>
@@ -94,7 +89,7 @@ export default function DashboardLayout({
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-          <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiViewGrid size={20} />Dashboard</Link>
+            <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiViewGrid size={20} />Dashboard</Link>
             <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiDocumentDuplicate size={20} />Cases</Link>
             <Link href="/merchant/map" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiLocationMarker size={20} />Map</Link>
           </nav>

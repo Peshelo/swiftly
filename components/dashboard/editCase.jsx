@@ -26,6 +26,7 @@ export default function EditCaseForm({ recordId }) {
     longitude: "",
     merchant: null,
     status: "",
+    priority: "",
   });
 
   const handleChange = (e) => {
@@ -48,6 +49,7 @@ export default function EditCaseForm({ recordId }) {
         longitude: record.longitude,
         merchant: record.merchant,
         status: record.status,
+        priority: record.priority,
       });
     } catch (e) {
       toast.error(e.message);
@@ -73,7 +75,6 @@ export default function EditCaseForm({ recordId }) {
   return (
     <div className="">
       <div className="mb-4">
-        <h2 className="text-2xl font-bold">Edit Case</h2>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -137,6 +138,22 @@ export default function EditCaseForm({ recordId }) {
             required
           />
         </div>
+        <div className="mt-2">
+                <label>
+                  Priority
+                  <select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleChange}
+                    className="block w-full border p-2"
+                  >
+                    <option disabled selected>Select a priority</option>
+                    <option value="red">High Priority</option>
+                    <option value="yellow">Medium Priority</option>
+                    <option value="green">Low Priority</option>
+                  </select>
+                </label>
+              </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Status</label>
           <Select
