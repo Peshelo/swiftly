@@ -152,6 +152,7 @@ export default function TrackCase({recordId}) {
                 </DrawerClose>
               </DrawerFooter>
             </div>
+            
           </div>
           ): <p className="flex flex-col h-[200px] w-full p-4 items-center justify-center text-gray-400">
             <HiCollection size={20} className="text-gray-500 my-2"/>
