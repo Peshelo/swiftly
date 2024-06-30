@@ -43,6 +43,8 @@ import { Avatar, AvatarGroup, AvatarIcon } from "@nextui-org/avatar";
 import { useState,useEffect } from 'react';
 import { toast } from "sonner"
 import pb from "@/lib/connection";
+import { Snippet } from "@nextui-org/react"
+import { HiMap } from "react-icons/hi"
 
 
 
@@ -99,7 +101,7 @@ export default function MerchantDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{totalCases?.length}</div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              Total number of cases
             </p>
           </CardContent>
         </Card>
@@ -113,7 +115,7 @@ export default function MerchantDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{totalOpenCases?.length}</div>
             <p className="text-xs text-muted-foreground">
-              +180.1% from last month
+              Total number of open cases
             </p>
           </CardContent>
         </Card>
@@ -125,7 +127,7 @@ export default function MerchantDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{totalOngoingCases?.length}</div>
             <p className="text-xs text-muted-foreground">
-              +19% from last month
+              Total number of ongoing cases
             </p>
           </CardContent>
         </Card>
@@ -137,7 +139,7 @@ export default function MerchantDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{totalResolvedCases?.length}</div>
             <p className="text-xs text-muted-foreground">
-              +201 since last hour
+              Total number of resolved cases
             </p>
           </CardContent>
         </Card>
@@ -146,21 +148,31 @@ export default function MerchantDashboard() {
         <Card
           className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
         >
-          <CardHeader className="flex flex-row items-center">
+          <CardHeader className="flex flex-row justify-between items-center">
             <div className="grid gap-2">
-              <CardTitle>Open Cases</CardTitle>
+              <CardTitle>Ongoing Cases</CardTitle>
               <CardDescription>
-                A list of all open  cases
+                A list of all ongoing cases
               </CardDescription>
             </div>
+            <div className="flex flex-row items-center w-fit gap-x-2">
             <Button asChild size="sm" className="ml-auto gap-1">
               <Link href="/merchant/cases">
                 View All
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
+            <Button asChild size="sm" variant={'secondary'} className="ml-auto gap-1">
+              <Link href="/merchant/map">
+              <HiMap className="h-4 w-4" />
+                Open Map
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            </div>
+           
           </CardHeader>
-          <CardContent>
+          <CardContent className="h-[400px] overflow-y-auto mb-4">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -171,6 +183,12 @@ export default function MerchantDashboard() {
                   <TableHead className="">
                     Status
                   </TableHead>
+                  <TableHead className="">
+                    Case Id
+                  </TableHead>
+                  <TableHead className="">
+                    Priority
+                  </TableHead>
                   {/* <TableHead className="">
                     Date
                   </TableHead>
@@ -178,8 +196,8 @@ export default function MerchantDashboard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {totalOpenCases.map(mycase=>(
-    <TableRow key={mycase.id} className={`bg-${mycase?.priority}-200`}>
+                {totalOngoingCases.map(mycase=>(
+    <TableRow key={mycase.id} >
     <TableCell>
       <div className="font-medium">{mycase?.title}</div>
       <div className="hidden text-sm text-muted-foreground md:inline">
@@ -190,9 +208,15 @@ export default function MerchantDashboard() {
       {mycase?.address}
     </TableCell>
     <TableCell className="">
-      <Badge className="text-xs" variant="outline">
+      <Badge className={`text-xs bg-${mycase?.priority}-200 text-${mycase?.priority}-700`} variant="outline" >
         {mycase?.status}
       </Badge>
+    </TableCell>
+    <TableCell>
+    <Snippet color="success" className="bg-white">{mycase?.id}</Snippet>
+    </TableCell>
+    <TableCell>
+      <div className={`bg-${mycase?.priority}-500 w-4 h-4`}></div>
     </TableCell>
     {/* <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
       {mycase.createdDate}
@@ -211,21 +235,21 @@ export default function MerchantDashboard() {
           <CardHeader>
             <CardTitle>Recent Cases</CardTitle>
           </CardHeader>
-          <CardContent className="grid">
+          <CardContent className="grid h-[400px] overflow-y-auto mb-4">
             {totalCases.map(mycase=>(
-                <div key={mycase.id} className="flex items-center gap-4 p-2 rounded-md hover:bg-gray-100 duration-75">
+                <div key={mycase.id} className="flex items-center border-b gap-4 p-2 py-4 rounded-md hover:bg-gray-100 duration-75">
                 <Avatar name="AN" />
     
                   <div className="grid gap-1">
                     <p className="text-sm font-medium leading-none">
-                      {mycase.title}
+                      {mycase?.title.toUpperCase()}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {mycase.address}
+                      {mycase?.address}
                     </p>
                   </div>
                   <div className="ml-auto font-medium">
-                    <Badge>{mycase.status}</Badge>
+                    <div className={`text-${mycase?.priority}-500 p-2 rounded-md text-xs`}>{mycase?.status}</div>
                   </div>
                 </div>
             ))}

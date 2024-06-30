@@ -60,6 +60,20 @@ export default function TrackCase({recordId}) {
       // toast.error(e.message)
     }
   }
+  //Uodate the status of the case
+  const cancelCase = async (id)=>{
+    if(confirm("Are you sure you want to cancel this case?")){
+      try{
+        await pb.collection('cases').update(id, {
+          status: "Cancelled",
+      });
+        toast.success("Case status has been updated");
+        fetchCaseDetails(id);
+      }catch(e){
+        toast.error(e.message)
+      }
+    };
+  }
   useEffect(()=>{
     fetchCaseDetails(recordId);
   },[recordId])
@@ -132,9 +146,9 @@ export default function TrackCase({recordId}) {
                
               </div>
               <DrawerFooter className="mt-4">
-                <Button variant="destructive">Close Case</Button>
+                {formData?.status == 'Cancelled' ? <p className="text-red-500 w-full"><b>NB: </b>This case was cancelled</p> : <Button variant="destructive" onClick={()=>cancelCase(formData?.id)}>I want to cancel my case</Button>}
                 <DrawerClose asChild>
-                  <Button variant="flat">Cancel</Button>
+                  <Button variant="flat">Close</Button>
                 </DrawerClose>
               </DrawerFooter>
             </div>

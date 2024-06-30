@@ -128,7 +128,7 @@ export default function Merchantstable() {
                                         <span className="block text-sm text-gray-600">{merchant.phoneNumber}</span>
                                     </div>
                                     <div>
-                                        <span className={`block text-sm font-semibold py-1 px-2 w-fit rounded-full text-white ${merchant.isActive ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'}`}>
+                                        <span className={`block text-sm font-semibold py-1 px-2 w-fit rounded-full  ${merchant.isActive ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}`}>
                                             {merchant.isActive ? 'Active' : 'Inactive'}
                                         </span>
                                     </div>

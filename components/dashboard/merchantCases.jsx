@@ -5,13 +5,16 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { HiBan, HiOutlineSearch, HiUserRemove, HiPencil } from "react-icons/hi";
+import { HiBan, HiOutlineSearch, HiUserRemove, HiPencil, HiEye, HiMap } from "react-icons/hi";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import AddMerchantForm from "./addMerchant";
 import EditMerchantForm from "./editMerchant";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EditCaseForm from "./editCase";
 import TrackCase from "./trackCase";
+import { Snippet } from "@nextui-org/react";
+import Link from "next/link";
+import MapModal from "./mapModal";
 
 export default function MerchantsCases() {
   const [merchants, setMerchants] = useState([]);
@@ -19,10 +22,16 @@ export default function MerchantsCases() {
   const [cases, setCases] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState({});
+  const [selectedCase, setSelectedCase] = useState(null);
 
   const fetchMerchants = async () => {
     try {
-      const list = await pb.collection('merchant').getFullList();
+      const list = await pb.collection('merchant').getFullList(
+        //Filter by created date
+        {
+          sort: '-created',
+        }
+      );
       setMerchants(list);
     } catch (e) {
       toast.error(e.message);
@@ -31,7 +40,11 @@ export default function MerchantsCases() {
 
   const fetchCases = async () => {
     try {
-      const list = await pb.collection('cases').getFullList();
+      const list = await pb.collection('cases').getFullList(
+        {
+          sort: '-created',
+        }
+      );
       setCases(list);
     } catch (e) {
       toast.error(e.message);
@@ -39,13 +52,16 @@ export default function MerchantsCases() {
   };
 
   const deleteRecord = async (id) => {
-    try {
-      await pb.collection('cases').delete(id);
-      await fetchCases();
-      toast.success("Record has been deleted");
-    } catch (e) {
-      toast.error(e.message);
+    if (confirm("Are you sure you want to delete this record?")) {
+      try {
+        await pb.collection('cases').delete(id);
+        await fetchCases();
+        toast.success("Record has been deleted");
+      } catch (e) {
+        toast.error(e.message);
+      }
     }
+ 
   };
 
   const search = async () => {
@@ -53,8 +69,19 @@ export default function MerchantsCases() {
       fetchCases();
       return;
     }
-    const record = await pb.collection('cases').getFirstListItem(`title ~ "${searchParam}"`);
+    const record = await pb.collection('cases').getList(1, 50, {
+      filter: `id ~ "${searchParam}"`
+  });      
     setCases(record.items);
+    console.log(record);
+  };
+
+  const handleMarkerClick = (caseData) => {
+    setSelectedCase(caseData);
+  };
+
+  const closeModal = () => {
+    setSelectedCase(null);
   };
 
   useEffect(() => {
@@ -86,7 +113,7 @@ export default function MerchantsCases() {
   return (
     <>
       <div className="w-full flex row items-center justify-end gap-x-1 mb-4">
-        <Input type="text" value={searchParam} onChange={(e) => setSearchParam(e.target.value)} placeholder="Search for cases..." className="outline-none w-1/4" />
+        <Input type="text" value={searchParam} onChange={(e) => setSearchParam(e.target.value)} placeholder="Search by case Id..." className="outline-none w-1/4" />
         <Button onClick={() => search()}><HiOutlineSearch /></Button>
       </div>
       <Card className="p-0">
@@ -94,10 +121,10 @@ export default function MerchantsCases() {
           <CardTitle>Cases</CardTitle>
         </CardHeader>
         <CardContent className="w-full">
-          {cases.length > 0 ? (
+          {cases ? (
             <div className="space-y-4">
               {cases.map((mycase) => (
-                <div key={mycase.id} className={`rounded-lg shadow-md border border-gray-300 transition duration-300 hover:shadow-lg ${getPriorityColor(mycase.priority.toLowerCase())} p-4`}>
+                <div key={mycase.id} className={`rounded-lg shadow-md border border-gray-300 transition duration-300 hover:shadow-lg  p-4`}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div className="col-span-1">
                       <span className="block text-lg font-semibold">{mycase.title}</span>
@@ -112,15 +139,21 @@ export default function MerchantsCases() {
                       <span className="block text-sm text-gray-600"><strong>Created:</strong> {new Date(mycase.created).toLocaleDateString()}</span>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mt-4">
+                  <div className="flex justify-between flex-wrap items-center p-2 rounded-md mt-4 border-t bg-white shadow-lgs">
                     <div>
-                      <Badge>{mycase.status}</Badge>
+                      <Snippet color="success" className="bg-white">{mycase?.id}</Snippet>
                     </div>
                     <div>
-                      <Badge>{mycase.priority.toUpperCase()}</Badge>
+                    <Badge className={`text-xs bg-${mycase?.priority}-200 text-${mycase?.priority}-700`} variant="outline" >
+        {mycase?.status}
+      </Badge>
                     </div>
                     <div className="flex gap-2">
-                    <TrackCase recordId={mycase.id} />
+                    {/* <TrackCase recordId={mycase.id} /> */}
+                    <Button onClick={() => handleMarkerClick(mycase)} className="gap-x-2 bg-gray-200 text-gray-700 hover:text-white"><HiMap size={20}/>View on map</Button>
+
+                    <Link className="bg-green-500 rounded-md p-2 px-4 gap-x-2 flex flex-row text-white" href={`/case?caseId=${mycase.id}`}><HiEye size={20}/>View Case</Link>
+                    <MapModal isOpen={!!selectedCase} onClose={closeModal} caseData={selectedCase} />
 
                       <Sheet className="w-1/2">
                         <SheetTrigger>

@@ -79,7 +79,7 @@ useEffect(()=>{
 },[])
 
   return (
-    <div className="">
+    <div className=" overflow-y-auto">
       <div className="mb-4">
         <h2 className="text-2xl font-bold">Add Case</h2>
       </div>

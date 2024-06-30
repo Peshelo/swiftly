@@ -15,7 +15,7 @@ export default function Home() {
   const [recordId, setRecordId] = useState("");
   return (
     <main className="flex min-h-screen flex-col">
-      <div className="flex flex-row p-4 border-b shadow-sm justify-between items-center bg-white">
+      <div className="flex flex-row p-4 border-b shadow-md justify-between items-center top-0 sticky z-50 bg-white">
         <nav className="flex flex-row items-center gap-x-4">
           <Link href="#" className="px-2 cursor-pointer hover:scale-105 transform transition-transform duration-300"><Logo /></Link>
         </nav>
@@ -73,13 +73,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-[1200px] -mb-[200px] max-md:w-screen mx-4 z-50 border-4 rounded-lg my-4 bg-white drop-shadow-xl animate-fadeInUp">
+        <div className="w-[1200px] -mb-[200px] max-md:w-screen mx-4 z-10 border-[5px] border-black rounded-lg my-4 bg-white drop-shadow-xl animate-fadeInUp">
           <Image src="/assets/images/saas2.png" alt="map" width={'1500'} height={'1500'} className="w-full h-full object-cover" />
         </div>
+        {/* <div className="w-[1200px] -mb-[200px] max-md:w-screen mx-4 z-10 rounded-lg my-4 drop-shadow-xl animate-fadeInUp">
+          <Image src="/assets/images/macbook.png" alt="map" width={'1500'} height={'1500'} className="w-full h-full object-cover" />
+        </div> */}
         <div id="services" className="section p-4 pt-[250px] w-full bg-white">
           <div className="container mx-auto px-4">
             <header className="text-center mx-auto mb-12 lg:px-20">
-              <h2 className="text-2xl leading-normal mb-2 font-bold text-black">What We Do</h2>
+              <h2 className="text-2xl leading-normal mb-2 font-bold text-black">Features</h2>
               {/* <HiDatabase size={32} className="mx-auto text-green-500" /> */}
               <p className="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2">
                 Save time managing customer issues and complaints with real-time tracking and updates.
@@ -95,12 +98,12 @@ export default function Home() {
                 { title: "Data Management", description: "Efficiently handle and analyze data related to customer issues.", icon: <HiDatabase size={32} /> },
               ].map((service, index) => (
                 <div key={index} className="flex-shrink rounded-lg px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp">
-                  <div className="py-8 px-12 mb-12 bg-background border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2 hover:bg-green-600 hover:text-white hover:shadow-lg rounded-lg">
+                  <div className=" group py-8 px-12 mb-12 bg-background border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2 hover:bg-green-600 hover:text-white hover:shadow-lg rounded-lg">
                     <div className="inline-block mb-4">
                       {service.icon}
                     </div>
                     <h3 className="text-lg leading-normal mb-2 font-semibold ">{service.title}</h3>
-                    <p className="text-gray-500">{service.description}</p>
+                    <p className="text-gray-500 group-hover:text-gray-200">{service.description}</p>
                   </div>
                 </div>
               ))}

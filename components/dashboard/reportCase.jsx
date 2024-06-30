@@ -15,6 +15,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 import pb from "@/lib/connection";
+import { ZIMBABWE_CITIES } from "@/lib/constants";
 
 export default function ReportCase() {
   const [goal, setGoal] = React.useState(350);
@@ -30,6 +31,7 @@ export default function ReportCase() {
   const [errors, setErrors] = React.useState({});
   const [merchants, setMerchants] = React.useState([]);
   const [currentLocation, setCurrentLocation] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     async function fetchMerchants() {
@@ -93,6 +95,7 @@ export default function ReportCase() {
     if (!form.address) newErrors.address = "Address is required";
     if (!form.merchant) newErrors.merchant = "Merchant is required";
     if (!form.priority) newErrors.priority = "Priority is required";
+    
     return newErrors;
   }
 
@@ -102,6 +105,8 @@ export default function ReportCase() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
+      setLoading(true);
+
       try {
         const formData = new FormData();
         formData.append("title", form.title);
@@ -123,10 +128,25 @@ export default function ReportCase() {
 
         const record = await pb.collection("cases").create(formData);
         console.log("Record created:", record);
+        // provide a way to copy the case id
+        navigator.clipboard.writeText(record.id);
+        navigator.vibrate([200, 100, 200]);
         alert("Case ID: " + record.id);
+        //Clear form
+        setForm({
+          title: "",
+          description: "",
+          city: "",
+          address: "",
+          merchant: "",
+          priority: "",
+          images: null,
+        });
         setErrors({});
       } catch (error) {
         console.error("Error creating record:", error);
+      } finally{
+        setLoading(false);
       }
     }
   }
@@ -143,7 +163,7 @@ export default function ReportCase() {
             <DrawerDescription>Report a case using your current location.</DrawerDescription>
           </DrawerHeader>
           <div className="pb-0">
-            <form onSubmit={handleSubmit} className="text-sm max-sm:mx-2">
+            <form onSubmit={handleSubmit} className="text-sm  max-sm:mx-2 ">
               <div className="mt-2">
                 <label>
                   Title
@@ -175,20 +195,26 @@ export default function ReportCase() {
                 </label>
               </div>
               <div className="mt-2">
-                <label>
-                  City
-                  <Input
-                    type="text"
-                    name="city"
-                    value={form.city}
-                    onChange={handleChange}
-                    className="block w-full border p-2"
-                  />
-                  {errors.city && (
-                    <span className="text-red-500">{errors.city}</span>
-                  )}
-                </label>
-              </div>
+      <label>
+        City
+        <select
+          name="city"
+          value={form.city}
+          onChange={handleChange}
+          className="block w-full border p-2"
+        >
+          <option value="" selected disabled>Select a city</option>
+          {ZIMBABWE_CITIES.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+        {errors.city && (
+          <span className="text-red-500">{errors.city}</span>
+        )}
+      </label>
+    </div>
               <div className="mt-2">
                 <label>
                   Address
@@ -217,7 +243,8 @@ export default function ReportCase() {
                   />
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="w-full flex flex-row justify-between gap-4">
+              <div className="mt-2 w-full">
                 <label>
                   Priority
                   <select
@@ -236,7 +263,7 @@ export default function ReportCase() {
                   )}
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 w-full">
                 <label>
                   Merchant
                   <select
@@ -257,6 +284,8 @@ export default function ReportCase() {
                   )}
                 </label>
               </div>
+              </div>
+             
               <div className="mt-2">
                 {currentLocation && (
                   <p className="text-gray-600 text-sm">

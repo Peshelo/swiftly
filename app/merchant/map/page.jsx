@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import pb from "@/lib/connection";
 import TrackCase from "@/components/dashboard/trackCase";
+// import MapboxDirections from "@mapbox/mapbox-gl-directions";
 export default function MapPage() {
     const [cases, setCases] = useState([])
     const mapBoxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY;
@@ -47,11 +48,14 @@ export default function MapPage() {
                     zoom: 14
                 }}
                 style={{ width: "100%", height: "100vh" }}
-                mapStyle="mapbox://styles/mapbox/streets-v9"
+                // mapStyle="mapbox://styles/mapbox/streets-v9"
+                mapStyle="mapbox://styles/mapbox/standard"
+
             >
                 <GeolocateControl position="top-left" />
                 <FullscreenControl position="top-left" />
                 <NavigationControl position="top-left" />
+                {/* <MapboxDirections accessToken={mapBoxKey} /> */}
                 <ScaleControl />
 
                 {cases.length > 0 && cases.map((mycase, index) => (

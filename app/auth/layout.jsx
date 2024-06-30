@@ -13,7 +13,7 @@ export default function Layout({ children }) {
         <div className="w-full h-full relative">
   {/* Background image with gradient overlay */}
   <div className="relative w-full h-full">
-    <Image src="/assets/images/bg1.png" layout="fill" className="rounded-md" objectFit="cover" />
+    <Image src="/assets/images/researchers-looking-alternative.png" layout="fill" className="rounded-md" objectFit="cover" />
     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent rounded-md" />
   </div>
 
