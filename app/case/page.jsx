@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import pb from "@/lib/connection";
 import { toast } from 'sonner';
 import { Badge } from "@/components/dashboard/badge/badge";
@@ -70,6 +70,8 @@ export default function CaseDetailsPage() {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="w-[1200px] mx-auto">
       <Button onClick={() => router.back()} className="mb-4 flex flex-row gap-x-2 text-gray-500 my-4" variant={'flat'}>
         <HiArrowLeft size={20}/>Back
@@ -120,5 +122,6 @@ export default function CaseDetailsPage() {
         </Modal.Body>
       </Modal>
     </div>
+    </Suspense>
   );
 }
