@@ -1,3 +1,12 @@
+export default function CasePage() {
+    return (
+        <div>
+            <h1>Sandbox Testing Page</h1>
+            </div>
+    )
+    
+}
+
 // import React from 'react';
 // import './App.css';
 // import mapboxgl from 'mapbox-gl';
