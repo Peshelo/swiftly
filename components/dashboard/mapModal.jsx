@@ -20,8 +20,8 @@ const MapModal = ({ isOpen, onClose, caseData }) => {
         <Map
           mapboxAccessToken={mapBoxKey}
           initialViewState={{
-            longitude: caseData.longitude,
-            latitude: caseData.latitude,
+            longitude: caseData.latitude,
+            latitude: caseData.longitude,
             zoom: 14,
           }}
           style={{ width: '100%', height: '100%' }}
@@ -31,10 +31,10 @@ const MapModal = ({ isOpen, onClose, caseData }) => {
           <FullscreenControl position="top-left" />
           <NavigationControl position="top-left" />
           <ScaleControl />
-          <Marker longitude={caseData.longitude} latitude={caseData.latitude} />
+          <Marker longitude={caseData.latitude} latitude={caseData.longitude} />
           <Popup
-            longitude={caseData.longitude}
-            latitude={caseData.latitude}
+            longitude={caseData.latitude}
+            latitude={caseData.longitude}
             onClose={onClose}
             closeOnClick={false}
             className="p-2"
