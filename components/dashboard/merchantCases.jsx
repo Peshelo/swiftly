@@ -16,6 +16,8 @@ import { Snippet } from "@nextui-org/react";
 import Link from "next/link";
 import MapModal from "./mapModal";
 import { IoCall, IoPhoneLandscape } from "react-icons/io5";
+import { FaDirections } from "react-icons/fa";
+
 
 export default function MerchantsCases() {
   const [merchants, setMerchants] = useState([]);
@@ -154,6 +156,11 @@ export default function MerchantsCases() {
                     <div className="flex gap-2">
                     {/* <TrackCase recordId={mycase.id} /> */}
                     {/* <Button onClick={() => handleMarkerClick(mycase)} className="gap-x-2 bg-gray-200 text-gray-700 hover:text-white"><HiMap size={20}/>View on map</Button> */}
+                    {/* const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`; */}
+                    {/* <Link href={`https://www.google.com/maps/dir/?api=1&destination=${mycase?.latitude},${mycase?.longitude}`} className="gap-x-2 bg-gray-200 text-gray-700 flex flex-row p-2 rounded-md hover:text-white"><HiMap size={20}/>Get directions</Link> */}
+                    <Link target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${mycase?.latitude},${mycase?.longitude}`} className="gap-x-2 bg-gray-200 text-gray-700 flex flex-row p-2 rounded-md hover:text-white" >
+                    <FaDirections size={20} />
+        Get Directions </Link>
                     <Link href={`/merchant/map?lat=${mycase?.latitude}&long=${mycase?.longitude}`} className="gap-x-2 bg-gray-200 text-gray-700 flex flex-row p-2 rounded-md hover:text-white"><HiMap size={20}/>View on map</Link>
 
                     <Link className="bg-green-500 rounded-md p-2 px-4 gap-x-2 flex flex-row text-white" href={`/case?caseId=${mycase.id}`}><HiEye size={20}/>View Case</Link>

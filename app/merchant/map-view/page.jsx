@@ -8,6 +8,9 @@ import pb from "@/lib/connection";
 import TrackCase from "@/components/dashboard/trackCase";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { FaDirections } from "react-icons/fa";
+
 // import MapboxDirections from "@mapbox/mapbox-gl-directions";
 export default function MapPage() {
     const [cases, setCases] = useState([])
@@ -93,6 +96,9 @@ export default function MapPage() {
                             <p>{selectedCase?.title}</p>
                             <Badge variant="secondary">{selectedCase?.status}</Badge>
                             <TrackCase recordId={selectedCase.id}/>
+                            <Link target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${selectedCase?.latitude},${selectedCase?.longitude}`} className="gap-x-2 text-sm border-t text-gray-700 mt-2 flex flex-row pt-2 hover:text-blue-600" >
+                    <FaDirections size={15} />
+        Get Directions </Link>
                         </div>
                     </Popup>
                 )}
