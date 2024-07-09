@@ -1,5 +1,5 @@
 "use client"
-import { useState,useEffect } from "react";
+import { useState,useEffect, Suspense } from "react";
 import { Map, Marker, NavigationControl, Popup, FullscreenControl, ScaleControl, GeolocateControl } from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { FaDirections } from "react-icons/fa";
 
 // import MapboxDirections from "@mapbox/mapbox-gl-directions";
-export default function MapPage() {
+function MapPage() {
     const [cases, setCases] = useState([])
     const mapBoxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY;
     const [coordinates, setCoordinates] = useState({
@@ -106,4 +106,15 @@ export default function MapPage() {
             </Map>
         </>
     );
+}
+
+
+export default function Page(){
+    return(
+        <div>
+            <Suspense fallback={<div>Loading Map...</div>}>
+            <MapPage/>
+            </Suspense>
+        </div>
+    )
 }
