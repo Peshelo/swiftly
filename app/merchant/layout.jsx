@@ -74,7 +74,7 @@ export default function DashboardLayout({
         <Link href={'/merchant'} className="px-2"><Logo  /></Link>
         <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiViewGrid size={20} />Dashboard</Link>
             <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiDocumentDuplicate size={20} />Cases</Link>
-            <Link href="/merchant/map" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiLocationMarker size={20} />Map</Link>
+            <Link href="/merchant/map-view" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiLocationMarker size={20} />Map</Link>
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -91,7 +91,7 @@ export default function DashboardLayout({
           <nav className="grid gap-6 text-lg font-medium">
             <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiViewGrid size={20} />Dashboard</Link>
             <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiDocumentDuplicate size={20} />Cases</Link>
-            <Link href="/merchant/map" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiLocationMarker size={20} />Map</Link>
+            <Link href="/merchant/map-view" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiLocationMarker size={20} />Map</Link>
           </nav>
         </SheetContent>
       </Sheet>

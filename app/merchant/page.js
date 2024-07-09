@@ -163,7 +163,7 @@ export default function MerchantDashboard() {
               </Link>
             </Button>
             <Button asChild size="sm" variant={'secondary'} className="ml-auto gap-1">
-              <Link href="/merchant/map">
+              <Link href="/merchant/map-view">
               <HiMap className="h-4 w-4" />
                 Open Map
                 <ArrowUpRight className="h-4 w-4" />

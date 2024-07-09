@@ -15,6 +15,7 @@ import TrackCase from "./trackCase";
 import { Snippet } from "@nextui-org/react";
 import Link from "next/link";
 import MapModal from "./mapModal";
+import { IoCall, IoPhoneLandscape } from "react-icons/io5";
 
 export default function MerchantsCases() {
   const [merchants, setMerchants] = useState([]);
@@ -133,6 +134,8 @@ export default function MerchantsCases() {
                     <div className="col-span-1">
                       <span className="block text-sm text-gray-600"><strong>City:</strong> {mycase.city}</span>
                       <span className="block text-sm text-gray-600"><strong>Address:</strong> {mycase.address.length > 50 ? mycase.address.substring(0, 50) + '...' : mycase.address}</span>
+                     {mycase?.phoneNumber && <a href={`tel:${mycase?.phoneNumber}`} className="flex flex-row p-1 w-fit items-center hover:text-yellow-500 duration-75 gap-x-2 text-sm text-gray-600"><IoCall size={15} />{mycase?.phoneNumber}</a>
+                    }
                     </div>
                     <div className="col-span-1">
                       <span className="block text-sm text-gray-600"><strong>Coordinates:</strong> {mycase.latitude}, {mycase.longitude}</span>
@@ -150,7 +153,8 @@ export default function MerchantsCases() {
                     </div>
                     <div className="flex gap-2">
                     {/* <TrackCase recordId={mycase.id} /> */}
-                    <Button onClick={() => handleMarkerClick(mycase)} className="gap-x-2 bg-gray-200 text-gray-700 hover:text-white"><HiMap size={20}/>View on map</Button>
+                    {/* <Button onClick={() => handleMarkerClick(mycase)} className="gap-x-2 bg-gray-200 text-gray-700 hover:text-white"><HiMap size={20}/>View on map</Button> */}
+                    <Link href={`/merchant/map?lat=${mycase?.latitude}&long=${mycase?.longitude}`} className="gap-x-2 bg-gray-200 text-gray-700 flex flex-row p-2 rounded-md hover:text-white"><HiMap size={20}/>View on map</Link>
 
                     <Link className="bg-green-500 rounded-md p-2 px-4 gap-x-2 flex flex-row text-white" href={`/case?caseId=${mycase.id}`}><HiEye size={20}/>View Case</Link>
                     <MapModal isOpen={!!selectedCase} onClose={closeModal} caseData={selectedCase} />

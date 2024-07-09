@@ -13,20 +13,9 @@ export default function MapPage() {
     const [cases, setCases] = useState([])
     const mapBoxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY;
     const [coordinates, setCoordinates] = useState({
-        latitude: useSearchParams().get('lat'),
-        longitude: useSearchParams().get('long')
+        latitude: -17.825165,
+        longitude: 31.053028
     });
-    //http://localhost:3000/merchant/map?lat=-17.809408?&long=31.0116352
-    const latitude = parseFloat(useSearchParams().get('lat'));
-    const longitude = parseFloat(useSearchParams().get('long'));
-    useEffect(() => {
-        if (latitude && longitude) {
-            setCoordinates({
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude)
-            });
-        }
-    },[latitude, longitude]);
 
     const fetchCases = async () => {
         try {
@@ -82,12 +71,11 @@ export default function MapPage() {
                latitude={mycase?.latitude}
                onClick={() => setSelectedCase(mycase)}
                color={
-                   mycase.status === 'Open' ? '#0000FF' : // Green for Open
+                   mycase.status === 'Open' ? '#00FF00' : // Green for Open
                    mycase.status === 'Cancelled' ? '#FF0000' : // Red for Canceled
                    mycase.status === 'In Progress' ? '#FFFF00' : // Yellow for In Progress
-                   '#00FF00' // Default color (Blue) if none of the statuses match
+                   '#0000FF' // Default color (Blue) if none of the statuses match
                }
-               
            />
                       
                 ))}

@@ -51,6 +51,7 @@ export default function TrackCase({recordId}) {
         longitude: record.longitude,
         merchant: record.merchant,
         status: record.status,
+        phoneNumber: record.phoneNumber,
         images: record.images,
         priority: record.priority,
         merchant: record.expand.merchant
@@ -106,6 +107,10 @@ export default function TrackCase({recordId}) {
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Address:</Label>
                 <p>{formData?.address}</p>
+              </div>
+              <div className="mt-2">
+                <Label className="font-semibold text-green-700">Client PhoneNumber:</Label>
+                <p>{formData?.phoneNumber}</p>
               </div>
               <div className="mt-2">
                 <Label className="font-semibold text-green-700">Status:</Label>

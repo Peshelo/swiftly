@@ -25,6 +25,7 @@ export default function ReportCase() {
     city: "",
     address: "",
     merchant: "",
+    phoneNumber: "",
     priority: "",
     images: null,
   });
@@ -95,6 +96,7 @@ export default function ReportCase() {
     if (!form.address) newErrors.address = "Address is required";
     if (!form.merchant) newErrors.merchant = "Merchant is required";
     if (!form.priority) newErrors.priority = "Priority is required";
+    if (!form.phoneNumber) newErrors.phoneNumber = "Phone Number is required";
     
     return newErrors;
   }
@@ -115,6 +117,8 @@ export default function ReportCase() {
         formData.append("address", form.address);
         formData.append("merchant", form.merchant);
         formData.append("priority", form.priority);
+        formData.append("phoneNumber",form.phoneNumber)
+        
         formData.append("status", "Open");
         if (currentLocation) {
           formData.append("latitude", currentLocation.latitude);
@@ -138,6 +142,7 @@ export default function ReportCase() {
           description: "",
           city: "",
           address: "",
+          phoneNumber: "",
           merchant: "",
           priority: "",
           images: null,
@@ -215,6 +220,21 @@ export default function ReportCase() {
         )}
       </label>
     </div>
+    <div className="mt-2">
+                <label>
+                  PhoneNumber
+                  <Input
+                    type="text"
+                    name="address"
+                    value={form.phoneNumber}
+                    onChange={handleChange}
+                    className="block w-full border p-2"
+                  />
+                  {errors.address && (
+                    <span className="text-red-500">{errors?.phoneNumber}</span>
+                  )}
+                </label>
+              </div>
               <div className="mt-2">
                 <label>
                   Address
