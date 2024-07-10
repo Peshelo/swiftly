@@ -74,11 +74,11 @@ function MapPage() {
                latitude={mycase?.latitude}
                onClick={() => setSelectedCase(mycase)}
                color={
-                   mycase.status === 'Open' ? '#00FF00' : // Green for Open
-                   mycase.status === 'Cancelled' ? '#FF0000' : // Red for Canceled
-                   mycase.status === 'In Progress' ? '#FFFF00' : // Yellow for In Progress
-                   '#0000FF' // Default color (Blue) if none of the statuses match
-               }
+                mycase.status === 'Open' ? '#0000FF' : // Green for Open
+                mycase.status === 'Cancelled' ? '#FF0000' : // Red for Canceled
+                mycase.status === 'In Progress' ? '#FFFF00' : // Yellow for In Progress
+                '#00FF00' // Default color (Blue) if none of the statuses match
+            }
            />
                       
                 ))}
