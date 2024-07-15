@@ -225,7 +225,7 @@ export default function ReportCase() {
                   PhoneNumber
                   <Input
                     type="text"
-                    name="address"
+                    name="phoneNumber"
                     value={form.phoneNumber}
                     onChange={handleChange}
                     className="block w-full border p-2"
