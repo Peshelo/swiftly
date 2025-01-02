@@ -68,10 +68,7 @@ export default function Page() {
         <>
             <div className="flex flex-col h-full w-full justify-center items-center p-10">
                 <form onSubmit={register} className="w-full flex flex-col gap-y-2 items-center">
-                    <Link href="/" className="p-2 rounded-sm">
-                         <Logo/>
-                    </Link>
-                    <h1 className="w-full text-center text-xl font-semibold my-2">Welcome back</h1>
+                    <h1 className="w-full text-center text-xl font-semibold my-2">Sign in to your account</h1>
                     <p className="text-red-600 text-sm w-full">{error}</p>
                     <Input type="email" placeholder="Email" name="username" value={formData.username} onChange={handleInputChange} onFocus={()=>setError('')} />
                     <Input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange} onFocus={()=>setError('')}/>

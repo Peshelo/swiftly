@@ -24,17 +24,17 @@ export default function Home() {
           <ReportCase />
         </div>
       </div>
-      <div className="font-sans background bg-gradient-to-b from-green-700 to-green-900 flex flex-col items-center min-h-screen w-full">
+      <div className="font-sans background bg-gradient-to-b from-black to-blue-900 flex flex-col items-center min-h-screen w-full">
         <div>
-          <div className="absolute inset-0 bg-gradient-to-t -z-10 from-green-700 to-transparent opacity-75"></div>
+          <div className="absolute inset-0 bg-gradient-to-t -z-10 from-black to-transparent opacity-75"></div>
           <div className="md:overflow-hidden mt-[100px] mb-[50px]">
             <div className="px-4 py-16">
               <div className="relative w-full md:max-w-2xl md:mx-auto text-center">
-                <h1 className="font-bold text-white drop-shadow-lg text-[100px] max-md:text-[50px] leading-tight mb-6">
-                  Swiftly App
+                <h1 className="font-bold text-white drop-shadow-lg text-[50px] max-md:text-[40px] leading-tight mb-6">
+                  ZRP EMERGENCY PORTAL
                 </h1>
                 <label className="text-gray-200 my-4 text-md">
-                  Empowering Customers, Amplifying Voices - Your Direct Line to Local Services.
+                  Empowering Customers, Amplifying Voices - Your Direct Line to ZRP.
                 </label>
                 <br />
                 <div className="flex flex-row items-center gap-x-1 my-4 px-4">
@@ -70,43 +70,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-[1200px] -mb-[200px] max-md:w-screen mx-4 z-10 border-[5px] border-black rounded-lg my-4 bg-white drop-shadow-xl animate-fadeInUp">
-          <Image src="/assets/images/saas2.png" alt="map" width={'1500'} height={'1500'} className="w-full h-full object-cover" />
-        </div>
-        {/* <div className="w-[1200px] -mb-[200px] max-md:w-screen mx-4 z-10 rounded-lg my-4 drop-shadow-xl animate-fadeInUp">
-          <Image src="/assets/images/macbook.png" alt="map" width={'1500'} height={'1500'} className="w-full h-full object-cover" />
-        </div> */}
-        <div id="services" className="section p-4 pt-[250px] w-full bg-white">
-          <div className="container mx-auto px-4">
-            <header className="text-center mx-auto mb-12 lg:px-20">
-              <h2 className="text-2xl leading-normal mb-2 font-bold text-black">Features</h2>
-              {/* <HiDatabase size={32} className="mx-auto text-green-500" /> */}
-              <p className="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2">
-                Save time managing customer issues and complaints with real-time tracking and updates.
-              </p>
-            </header>
-            <div className="flex flex-wrap flex-row -mx-4 text-center">
-              {[
-                { title: "Issue Management", description: "Easily manage and resolve customer issues and complaints.", icon: <HiDatabase size={32} /> },
-                { title: "Location Tracking", description: "Pinpoint the exact location of issues on a map for quick resolution.", icon: <HiMap size={32} /> },
-                { title: "Real-Time Updates", description: "Get real-time updates on the status of each case as it's being handled.", icon: <HiClock size={32} /> },
-                { title: "Case Resolution", description: "Track the progress and completion of cases efficiently.", icon: <HiCheckCircle size={32} /> },
-                { title: "Customer Engagement", description: "Enhance customer satisfaction through effective communication.", icon: <HiUserGroup size={32} /> },
-                { title: "Data Management", description: "Efficiently handle and analyze data related to customer issues.", icon: <HiDatabase size={32} /> },
-              ].map((service, index) => (
-                <div key={index} className="flex-shrink rounded-lg px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp">
-                  <div className=" group py-8 px-12 mb-12 bg-background border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2 hover:bg-green-600 hover:text-white hover:shadow-lg rounded-lg">
-                    <div className="inline-block mb-4">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-lg leading-normal mb-2 font-semibold ">{service.title}</h3>
-                    <p className="text-gray-500 group-hover:text-gray-200">{service.description}</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
