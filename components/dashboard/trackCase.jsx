@@ -20,7 +20,12 @@ import {Badge} from "@/components/dashboard/badge/badge"
 import { image } from "@nextui-org/theme"
 import { HiCollection } from "react-icons/hi"
 
-export default function TrackCase({recordId}) {
+export default function TrackCase({recordId,refreshParent}) {
+
+  const refresh = ()=>{
+    // fetchCaseDetails(recordId);
+    refreshParent();
+  }
   const [formData, setFormData] = useState({
     id:'',
     title: '',
@@ -66,9 +71,10 @@ export default function TrackCase({recordId}) {
     if(confirm("Are you sure you want to cancel this case?")){
       try{
         await pb.collection('cases').update(id, {
-          status: "Cancelled",
+          status: "Resolved",
       });
         toast.success("Case status has been updated");
+        refresh();
         fetchCaseDetails(id);
       }catch(e){
         toast.error(e.message)
@@ -151,7 +157,7 @@ export default function TrackCase({recordId}) {
                
               </div>
               <DrawerFooter className="mt-4">
-                {formData?.status == 'Cancelled' ? <p className="text-red-500 w-full"><b>NB: </b>This case was cancelled</p> : <Button variant="destructive" onClick={()=>cancelCase(formData?.id)}>I want to cancel my case</Button>}
+                {formData?.status == 'Resolved' ? <p className="text-green-500 w-full"><b>NB: </b>This case was resolved</p> : <Button variant="destructive" onClick={()=>cancelCase(formData?.id)}>I want to resolve case</Button>}
                 <DrawerClose asChild>
                   <Button variant="flat">Close</Button>
                 </DrawerClose>
