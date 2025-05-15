@@ -19,6 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaDirections } from "react-icons/fa";
 import { set } from "date-fns";
+  const siren = new Audio("/assets/audio/siren.mp3");
 
 // import MapboxDirections from "@mapbox/mapbox-gl-directions";
 function MapPage() {
@@ -28,7 +29,6 @@ function MapPage() {
     latitude: -17.825165,
     longitude: 31.053028,
   });
-  const siren = new Audio("/assets/audio/siren.mp3");
 
 
   const fetchCases = async () => {
