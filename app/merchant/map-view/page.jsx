@@ -19,11 +19,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaDirections } from "react-icons/fa";
 import { set } from "date-fns";
-const siren = new Audio("/assets/audio/siren.mp3");
 
 function MapPage() {
   const [cases, setCases] = useState([]);
   const [selectedCase, setSelectedCase] = useState(null);
+  const [siren, setSiren] = useState(null);
 
   const mapBoxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY;
   const [coordinates, setCoordinates] = useState({
@@ -42,32 +42,55 @@ function MapPage() {
   };
 
   useEffect(() => {
-    fetchCases();
-    pb.collection("cases").subscribe("*", (e) => {
-      if (e.action === "create") {
-        setCases((prevCases) => [...prevCases, e.record]);
-        setCoordinates({
-          latitude: e.record.latitude,
-          longitude: e.record.longitude,
-        });
-        toast.success(`New case created: ${e.record.title}`);
-        console.log(e.record);
-        if (e.record?.title.toString().toLowerCase().includes("sos")) {
-          siren.play();
-        }
-      } else if (e.action === "update") {
-        setCases((prevCases) =>
-          prevCases.map((mycase) =>
-            mycase.id === e.record.id ? { ...mycase, ...e.record } : mycase
-          )
-        );
-      } else if (e.action === "delete") {
-        setCases((prevCases) =>
-          prevCases.filter((mycase) => mycase.id !== e.record.id)
-        );
-      }
-    });
+    // Initialize audio only in browser environment
+    if (typeof window !== "undefined") {
+      setSiren(new Audio("/assets/audio/siren.mp3"));
+    }
   }, []);
+
+  useEffect(() => {
+    fetchCases();
+    let subscription;
+
+    const setupSubscription = async () => {
+      try {
+        subscription = await pb.collection("cases").subscribe("*", (e) => {
+          if (e.action === "create") {
+            setCases((prevCases) => [...prevCases, e.record]);
+            setCoordinates({
+              latitude: e.record.latitude,
+              longitude: e.record.longitude,
+            });
+            toast.success(`New case created: ${e.record.title}`);
+            console.log(e.record);
+            if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
+              siren.play();
+            }
+          } else if (e.action === "update") {
+            setCases((prevCases) =>
+              prevCases.map((mycase) =>
+                mycase.id === e.record.id ? { ...mycase, ...e.record } : mycase
+              )
+            );
+          } else if (e.action === "delete") {
+            setCases((prevCases) =>
+              prevCases.filter((mycase) => mycase.id !== e.record.id)
+            );
+          }
+        });
+      } catch (err) {
+        console.error("Subscription error:", err);
+      }
+    };
+
+    setupSubscription();
+
+    return () => {
+      if (subscription) {
+        pb.collection("cases").unsubscribe("*");
+      }
+    };
+  }, [siren]); // Added siren as dependency
 
   return (
     <>
@@ -103,8 +126,8 @@ function MapPage() {
                   : "#00FF00"
               }
             >
-              {(mycase?.status != "Cancelled" ||
-                mycase?.status != "Resolved") && (
+              {(mycase?.status !== "Cancelled" ||
+                mycase?.status !== "Resolved") && (
                 <div className="flex flex-col justify-center items-center">
                   <div className="relative flex items-center justify-center">
                     {mycase?.title.toString().toLowerCase().includes("sos") && (
@@ -112,7 +135,7 @@ function MapPage() {
                         <span className="absolute w-10 h-10 rounded-full bg-red-500 opacity-75 animate-ping"></span>
                         <Image
                           src="/assets/images/sos.png"
-                          alt="marker"
+                          alt="SOS emergency marker"
                           width={30}
                           height={30}
                           className="relative z-10"
@@ -130,7 +153,7 @@ function MapPage() {
                       <div className="bg-white border-2 border-blue-600 rounded-full flex items-center justify-center">
                         <Image
                           src="/assets/images/collision.png"
-                          alt="marker"
+                          alt="Traffic accident marker"
                           width={30}
                           height={30}
                           className="relative z-10"
@@ -148,7 +171,7 @@ function MapPage() {
                       <div className="bg-white border-2 border-orange-600 rounded-full flex items-center justify-center">
                         <Image
                           src="/assets/images/robbery.png"
-                          alt="marker"
+                          alt="Crime incident marker"
                           width={30}
                           height={30}
                           className="relative z-10"
