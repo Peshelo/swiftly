@@ -54,6 +54,7 @@ import { HiDocumentDuplicate, HiLocationMarker, HiViewGrid } from "react-icons/h
 import LogoWhite from "@/components/ui/logoWhite";
 import { FaComment } from "react-icons/fa";
 
+
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }) {

@@ -19,6 +19,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaDirections } from "react-icons/fa";
 import { set } from "date-fns";
+import { ToastAction } from "@/components/ui/toast"
+import { Button } from "@/components/ui/button";
 
 function MapPage() {
   const [cases, setCases] = useState([]);
@@ -67,29 +69,31 @@ function MapPage() {
             
             console.log(e.record);
             if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
-                toast.success(`New case created: ${e.record.title}`);
+                // toast.success(`New case created: ${e.record.title}`);
+                setSelectedCase(e.record);
              toast({
           variant: "destructive",
           title: "New SOS Alert Triggered",
           description: `New SOS Alert Triggered: ${e.record.title}`,
                 
-          action: <ToastAction altText="View Case" >
-            <Button className="bg-red-500 p-2 text-white" onClick={() => {
-              setSelectedCase(e.record);
-            }}>View Case</Button>
-          </ToastAction>,
+        //   action: <ToastAction altText="View Case" >
+        //     <button className="bg-red-500 p-2 text-white" onClick={() => {
+        //       setSelectedCase(e.record);
+        //     }}>View Case</button>
+        //   </ToastAction>,
         })
               siren.play();
             }else{
+                setSelectedCase(e.record);
                 toast.success(`New case created: ${e.record.title}`);
              toast({
           title: `New ${e.record.title} Alert Triggered`,
           description: `New SOS Alert Triggered: ${e.record.title}`,
-          action: <ToastAction altText="View Case" >
-            <Button className="bg-black-500 p-2 text-white" onClick={() => {
-              setSelectedCase(e.record);
-            }}>View Case</Button>
-          </ToastAction>,
+        //   action: <ToastAction altText="View Case" >
+        //     <button className="bg-black-500 p-2 text-white" onClick={() => {
+        //       setSelectedCase(e.record);
+        //     }}>View Case</button>
+        //   </ToastAction>,
         })
                 notificaiton.play();
             }
