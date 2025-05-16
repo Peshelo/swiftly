@@ -191,7 +191,7 @@ export default function MerchantsCases() {
             </div>
           ) : (
             <div className="text-center py-4">
-              No records found
+              <p>No records found</p>
             </div>
           )}
         </CardContent>

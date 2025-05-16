@@ -68,54 +68,44 @@ function MapPage() {
             console.log(e.record);
             if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
                 // toast.success(`New case created: ${e.record.title}`);
-                // setSelectedCase(e.record);
-             toast({
-          title: "New SOS Alert Triggered",
-        //  children: (
-        //     <button onClick={() => {
-        //         setSelectedCase(e.record);
-        //     }
-        //     } className="bg-red-500 p-2 text-white">View Case</button>
-        //     ),
+             siren.play();
 
-        //   children: (
-        //     <button onClick={() => {
-        //         setSelectedCase(e.record);
-        //     }
-        //     } className="bg-red-500 p-2 text-white">View Case</button>
-        //   ),
-                
-        //   action: <ToastAction altText="View Case" >
-        //     <button className="bg-red-500 p-2 text-white" onClick={() => {
-        //       setSelectedCase(e.record);
-        //     }}>View Case</button>
-        //   </ToastAction>,
-        })
-              siren.play();
+             toast.error("New SOS Alert Triggered",
+              {
+                description: "Please respond immediately",
+                action: {
+                  label: "View",
+                  onClick: () => {
+                    setSelectedCase(e.record);
+                    setCoordinates({
+                      latitude: e.record.latitude,
+                      longitude: e.record.longitude,
+                    });
+                  },
+                },
+              }
+             );
             }else{
+               if (notificaiton) {
+            notificaiton.play();
+             }
                 // setSelectedCase(e.record);
-                toast.success(`New case created: ${e.record.title}`);
-             toast({
-          title: `New ${e.record.title} Alert Triggered`,
-        //   children : (
-        //     <button onClick={() => {
-        //         setSelectedCase(e.record);
-        //     }
-        //     } className="bg-black p-2 text-white">View Case</button>
-        //     ),
-        //        children: (
-        //     <button onClick={() => {
-        //         setSelectedCase(e.record);
-        //     }
-        //     } className="bg-black p-2 text-white">View Case</button>
-        //   ),
-        //   action: <ToastAction altText="View Case" >
-        //     <button className="bg-black-500 p-2 text-white" onClick={() => {
-        //       setSelectedCase(e.record);
-        //     }}>View Case</button>
-        //   </ToastAction>,
-        })
-                notificaiton.play();
+             toast.info(`New ${e.record.title} Alert Triggered`,
+              {
+                description: "Please respond immediately",
+                action: {
+                  label: "View",
+                  onClick: () => {
+                    setSelectedCase(e.record);
+                    setCoordinates({
+                      latitude: e.record.latitude,
+                      longitude: e.record.longitude,
+                    });
+                  },
+                },
+              }
+             )
+            
             }
           } else if (e.action === "update") {
             setCases((prevCases) =>

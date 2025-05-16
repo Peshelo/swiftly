@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
       <NextUIProvider>
       {children}    </NextUIProvider>
-      <Toaster />
+      <Toaster richColors position="top-right" expand={true} />
         </body>
     </html>
   );
