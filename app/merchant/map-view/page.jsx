@@ -68,7 +68,7 @@ function MapPage() {
             console.log(e.record);
             if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
                 // toast.success(`New case created: ${e.record.title}`);
-                setSelectedCase(e.record);
+                // setSelectedCase(e.record);
              toast({
           title: "New SOS Alert Triggered",
           description: `New SOS Alert Triggered: ${e.record.title}`,
@@ -88,7 +88,7 @@ function MapPage() {
         })
               siren.play();
             }else{
-                setSelectedCase(e.record);
+                // setSelectedCase(e.record);
                 toast.success(`New case created: ${e.record.title}`);
              toast({
           title: `New ${e.record.title} Alert Triggered`,
