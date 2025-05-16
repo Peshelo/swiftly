@@ -64,11 +64,33 @@ function MapPage() {
               latitude: e.record.latitude,
               longitude: e.record.longitude,
             });
-            toast.success(`New case created: ${e.record.title}`);
+            
             console.log(e.record);
             if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
+                toast.success(`New case created: ${e.record.title}`);
+             toast({
+          variant: "destructive",
+          title: "New SOS Alert Triggered",
+          description: `New SOS Alert Triggered: ${e.record.title}`,
+                
+          action: <ToastAction altText="View Case" >
+            <Button className="bg-red-500 p-2 text-white" onClick={() => {
+              setSelectedCase(e.record);
+            }}>View Case</Button>
+          </ToastAction>,
+        })
               siren.play();
             }else{
+                toast.success(`New case created: ${e.record.title}`);
+             toast({
+          title: `New ${e.record.title} Alert Triggered`,
+          description: `New SOS Alert Triggered: ${e.record.title}`,
+          action: <ToastAction altText="View Case" >
+            <Button className="bg-black-500 p-2 text-white" onClick={() => {
+              setSelectedCase(e.record);
+            }}>View Case</Button>
+          </ToastAction>,
+        })
                 notificaiton.play();
             }
           } else if (e.action === "update") {
