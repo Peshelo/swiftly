@@ -24,6 +24,8 @@ function MapPage() {
   const [cases, setCases] = useState([]);
   const [selectedCase, setSelectedCase] = useState(null);
   const [siren, setSiren] = useState(null);
+    const [notificaiton, setNotification] = useState(null);
+
 
   const mapBoxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY;
   const [coordinates, setCoordinates] = useState({
@@ -45,6 +47,7 @@ function MapPage() {
     // Initialize audio only in browser environment
     if (typeof window !== "undefined") {
       setSiren(new Audio("/assets/audio/siren.mp3"));
+      setNotification(new Audio("/assets/audio/notification.mp3"));
     }
   }, []);
 
@@ -65,6 +68,8 @@ function MapPage() {
             console.log(e.record);
             if (e.record?.title.toString().toLowerCase().includes("sos") && siren) {
               siren.play();
+            }else{
+                notificaiton.play();
             }
           } else if (e.action === "update") {
             setCases((prevCases) =>
@@ -126,8 +131,8 @@ function MapPage() {
                   : "#00FF00"
               }
             >
-              {(mycase?.status !== "Cancelled" ||
-                mycase?.status !== "Resolved") && (
+              {(mycase?.status !== "Resolved" ||
+                mycase?.status !== "Cancelled") && (
                 <div className="flex flex-col justify-center items-center">
                   <div className="relative flex items-center justify-center">
                     {mycase?.title.toString().toLowerCase().includes("sos") && (
