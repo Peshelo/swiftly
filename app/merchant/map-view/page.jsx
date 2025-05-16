@@ -71,13 +71,13 @@ function MapPage() {
                 // setSelectedCase(e.record);
              toast({
           title: "New SOS Alert Triggered",
-         children: (
-            <button onClick={() => {
-                setSelectedCase(e.record);
-            }
-            } className="bg-red-500 p-2 text-white">View Case</button>
-            ),
-            
+        //  children: (
+        //     <button onClick={() => {
+        //         setSelectedCase(e.record);
+        //     }
+        //     } className="bg-red-500 p-2 text-white">View Case</button>
+        //     ),
+
         //   children: (
         //     <button onClick={() => {
         //         setSelectedCase(e.record);
@@ -97,12 +97,12 @@ function MapPage() {
                 toast.success(`New case created: ${e.record.title}`);
              toast({
           title: `New ${e.record.title} Alert Triggered`,
-          children : (
-            <button onClick={() => {
-                setSelectedCase(e.record);
-            }
-            } className="bg-black p-2 text-white">View Case</button>
-            ),
+        //   children : (
+        //     <button onClick={() => {
+        //         setSelectedCase(e.record);
+        //     }
+        //     } className="bg-black p-2 text-white">View Case</button>
+        //     ),
         //        children: (
         //     <button onClick={() => {
         //         setSelectedCase(e.record);
