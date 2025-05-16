@@ -18,9 +18,7 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { FaDirections } from "react-icons/fa";
-import { set } from "date-fns";
-import { ToastAction } from "@/components/ui/toast"
-import { Button } from "@/components/ui/button";
+
 
 function MapPage() {
   const [cases, setCases] = useState([]);
@@ -72,9 +70,15 @@ function MapPage() {
                 // toast.success(`New case created: ${e.record.title}`);
                 setSelectedCase(e.record);
              toast({
-          variant: "destructive",
           title: "New SOS Alert Triggered",
           description: `New SOS Alert Triggered: ${e.record.title}`,
+          type: "error",
+          children: (
+            <button onClick={() => {
+                setSelectedCase(e.record);
+            }
+            } className="bg-red-500 p-2 text-white">View Case</button>
+          ),
                 
         //   action: <ToastAction altText="View Case" >
         //     <button className="bg-red-500 p-2 text-white" onClick={() => {
@@ -89,6 +93,12 @@ function MapPage() {
              toast({
           title: `New ${e.record.title} Alert Triggered`,
           description: `New SOS Alert Triggered: ${e.record.title}`,
+               children: (
+            <button onClick={() => {
+                setSelectedCase(e.record);
+            }
+            } className="bg-black p-2 text-white">View Case</button>
+          ),
         //   action: <ToastAction altText="View Case" >
         //     <button className="bg-black-500 p-2 text-white" onClick={() => {
         //       setSelectedCase(e.record);
