@@ -2,132 +2,117 @@
 import Link from "next/link"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import pb from "@/lib/connection";
-import AdminSideNav from "@/components/dashboard/sidenav";
-import Logo from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarGroup, AvatarIcon } from "@nextui-org/avatar";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import MerchantSideNav from "@/components/dashboard/merchantSideNav";
-import {
-  Activity,
-  ArrowUpRight,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  Package2,
-  Search,
-  Users,
-} from "lucide-react"
+import pb from "@/lib/connection"
+import { FiGrid, FiFileText, FiMap, FiSettings, FiLogOut, FiMenu, FiX } from "react-icons/fi"
+import Logo from "@/components/ui/logo"
 
-import { Badge } from "@/components/ui/badge"
-import {
-  CardContent,
-  CardDescription,
-  CardHeader
-} from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { HiDocumentDuplicate, HiLocationMarker, HiViewGrid } from "react-icons/hi"
-import LogoWhite from "@/components/ui/logoWhite";
-
-export default function DashboardLayout({
-  children, // will be a page or nested layout
-}) {
+export default function DashboardLayout({ children }) {
   const router = useRouter()
-  const currentPath = router.pathname;
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const currentPath = router.pathname
 
   const logout = () => {
-    pb.authStore.clear();
-    router.push('/auth/sign-in');
-    // pb.authStore.clear();
-    // router.refresh()
+    pb.authStore.clear()
+    router.push("/auth/sign-in")
   }
 
+  const NavLinks = () => (
+    <nav className="flex flex-col gap-2 mt-6 flex-1">
+      <Link
+        href="/merchant"
+        className={`flex items-center gap-3 px-4 py-2 rounded-md transition-all ${
+          currentPath === "/merchant"
+            ? "bg-green-600 text-white shadow-sm"
+            : "text-gray-300 hover:bg-green-700 hover:text-white"
+        }`}
+      >
+        <FiGrid /> Dashboard
+      </Link>
+      <Link
+        href="/merchant/cases"
+        className={`flex items-center gap-3 px-4 py-2 rounded-md transition-all ${
+          currentPath === "/merchant/cases"
+            ? "bg-green-600 text-white shadow-sm"
+            : "text-gray-300 hover:bg-green-700 hover:text-white"
+        }`}
+      >
+        <FiFileText /> Cases
+      </Link>
+      <Link
+        href="/merchant/map-view"
+        className={`flex items-center gap-3 px-4 py-2 rounded-md transition-all ${
+          currentPath === "/merchant/map"
+            ? "bg-green-600 text-white shadow-sm"
+            : "text-gray-300 hover:bg-green-700 hover:text-white"
+        }`}
+      >
+        <FiMap /> Map
+      </Link>
+    </nav>
+  )
+
   return (
-    <section className="w-screen h-screen overflow-hidden flex flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-slate-900 px-4 md:px-6">
-      <nav className="hidden text-white dark:text-slate-900 flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-      
-        <Link href={'/merchant'} className="px-2"><Logo  /></Link>
-        <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiViewGrid size={20} />Dashboard</Link>
-            <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiDocumentDuplicate size={20} />Cases</Link>
-            <Link href="/merchant/map-view" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-green-600'}`}><HiLocationMarker size={20} />Map</Link>
-      </nav>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0 md:hidden"
+    <section className="w-screen h-screen flex overflow-hidden bg-gray-100">
+      {/* Sidebar */}
+      <aside
+        className={`fixed md:static top-0 left-0 h-full w-64 bg-slate-900 text-white flex flex-col transition-transform duration-300 z-50 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-between p-4 border-b border-slate-700">
+          <Logo />
+          <button
+            className="md:hidden text-gray-300 hover:text-white"
+            onClick={() => setSidebarOpen(false)}
           >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link href="/merchant" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiViewGrid size={20} />Dashboard</Link>
-            <Link href="/merchant/cases" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/cases' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiDocumentDuplicate size={20} />Cases</Link>
-            <Link href="/merchant/map-view" className={`flex flex-row w-full items-center gap-x-1 py-2 p-2 rounded-md transition-all duration-300 ${currentPath === '/merchant/map' ? 'bg-green-600' : 'hover:bg-gray-100'}`}><HiLocationMarker size={20} />Map</Link>
-          </nav>
-        </SheetContent>
-      </Sheet>
-      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="ml-auto flex-1 sm:flex-initial">
-          {/* <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
-          </div> */}
-        </form>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <CircleUser className="h-5 w-5" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><Link href="/merchant/settings" className="w-full h-full">Settings</Link></DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={()=>logout()}>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </header>
-      
-        <div className=" w-full h-full bg-gray-50 overflow-y-auto">
-        {children}
+            <FiX size={20} />
+          </button>
         </div>
 
+        {/* Nav Links */}
+        <NavLinks />
+
+        {/* Bottom section */}
+        <div className="mt-auto flex flex-col border-t border-slate-700">
+          <Link
+            href="/merchant/settings"
+            className={`flex items-center gap-3 px-4 py-2 transition ${
+              currentPath === "/merchant/settings"
+                ? "bg-green-600 text-white shadow-sm"
+                : "text-gray-300 hover:bg-green-700 hover:text-white"
+            }`}
+          >
+            <FiSettings /> Settings
+          </Link>
+          <button
+            onClick={logout}
+            className="flex items-center gap-3 px-4 py-2 text-gray-300 hover:bg-red-600 hover:text-white transition"
+          >
+            <FiLogOut /> Logout
+          </button>
+        </div>
+      </aside>
+
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="absolute top-4 left-4 z-40 md:hidden p-2 rounded-md bg-slate-900 text-white"
+      >
+        <FiMenu size={20} />
+      </button>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Top bar */}
+        <header className="h-14 bg-white border-b shadow-sm flex items-center justify-end px-4">
+          {/* Add any user dropdown or quick actions here */}
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-4">{children}</main>
+      </div>
     </section>
   )
 }

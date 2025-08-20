@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 const inter = Manrope({subsets: ['latin']});
 
 export const metadata = {
-  title: "Switly App",
+  title: "CivicConnect",
   description: "Fast service for your needs",
 };
 
